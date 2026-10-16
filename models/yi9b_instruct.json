@@ -1,0 +1,23 @@
+{
+ "id": "yi9b_instruct",
+ "label": "yi9b_instruct",
+ "kind": "local",
+ "local_kind": "instruct",
+ "checkpoint": {
+  "repo": "01-ai/Yi-1.5-9B-Chat",
+  "revision": "1a0fc698cf883c4f5c325f026ca79f0ebd9955a5",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-06-26"
+ },
+ "adapter": null,
+ "frames": [
+  "chat"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "yi9b",
+ "template": {
+  "system_role": "native",
+  "chat_answer_prefix": "",
+  "notes": null
+ }
+}

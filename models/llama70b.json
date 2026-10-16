@@ -1,0 +1,83 @@
+{
+ "id": "llama70b",
+ "label": "Llama-3.3-70B-Instruct",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "CoreWeave",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 540,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "06a1f7b39261c2bcbfb2bb77bbac90ff",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "coreweave",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "1cdb3c0df032535de67e771171a88209",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "coreweave",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "1cdb3c0df032535de67e771171a88209",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "meta-llama/llama-3.3-70b-instruct",
+    "provider": "coreweave",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "7b18b25d51a9aa3703a43faa1556942d",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

@@ -1,0 +1,24 @@
+{
+ "id": "llama31_instruct",
+ "label": "llama31_instruct",
+ "kind": "local",
+ "local_kind": "instruct",
+ "checkpoint": {
+  "repo": "meta-llama/Llama-3.1-8B-Instruct",
+  "revision": "0e9e39f249a16976918f6564b8830bc894c89659",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-09-25"
+ },
+ "adapter": null,
+ "frames": [
+  "chat",
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "llama31",
+ "template": {
+  "system_role": "native",
+  "chat_answer_prefix": "",
+  "notes": "the template's own date header is left as served"
+ }
+}

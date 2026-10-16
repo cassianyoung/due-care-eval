@@ -1,0 +1,18 @@
+{
+ "id": "yi9b_base",
+ "label": "yi9b_base",
+ "kind": "local",
+ "local_kind": "base",
+ "checkpoint": {
+  "repo": "01-ai/Yi-1.5-9B",
+  "revision": "80d5471b1eae28beae33e06eadbd4b48e74d4ce1",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-06-26"
+ },
+ "adapter": null,
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "yi9b"
+}

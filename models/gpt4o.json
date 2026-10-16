@@ -1,0 +1,83 @@
+{
+ "id": "gpt4o",
+ "label": "GPT-4o",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "openai/gpt-4o",
+    "provider": "OpenAI",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 540,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "e2a4b9142e67525a0ad66c3f69f786ad",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "openai/gpt-4o",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "bdf1c747c2fb8376dcc8c77f7b033504",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "openai/gpt-4o",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "bdf1c747c2fb8376dcc8c77f7b033504",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "openai/gpt-4o",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3397823a995e709f20842fdf13f7d0ab",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

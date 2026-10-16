@@ -1,0 +1,18 @@
+{
+ "id": "stablelm12b_instruct",
+ "label": "stablelm12b_instruct",
+ "kind": "local",
+ "local_kind": "instruct",
+ "checkpoint": {
+  "repo": "stabilityai/stablelm-2-12b-chat",
+  "revision": "b6b62cd451b84e848514c00fafa66d9ead9297c5",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-05-20"
+ },
+ "adapter": null,
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "stablelm12b"
+}

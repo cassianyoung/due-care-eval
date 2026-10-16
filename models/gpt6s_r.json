@@ -1,0 +1,72 @@
+{
+ "id": "gpt6s_r",
+ "label": "gpt-6-sol (reasoning)",
+ "kind": "api",
+ "config_set": "on",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 200,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "27d7cc47a9e0467e897994bcb31f3681",
+   "readout": "reasoning"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 980,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "27d7cc47a9e0467e897994bcb31f3681",
+   "readout": "reasoning"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 980,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "27d7cc47a9e0467e897994bcb31f3681",
+   "readout": "reasoning"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 40,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "27d7cc47a9e0467e897994bcb31f3681",
+   "readout": "reasoning"
+  }
+ },
+ "reasoning_declared": [
+  "\"vendor_default\""
+ ],
+ "vendor_default": true
+}

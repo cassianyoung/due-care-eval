@@ -1,0 +1,83 @@
+{
+ "id": "qwen30b",
+ "label": "Qwen3-30B-A3B",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "provider": "StreamLake",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 540,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "fc8ea5251e6a6c2cf83906fb3854b352",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "provider": "StreamLake",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "fc8ea5251e6a6c2cf83906fb3854b352",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "provider": "StreamLake",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "fc8ea5251e6a6c2cf83906fb3854b352",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "qwen/qwen3-30b-a3b-instruct-2507",
+    "provider": "StreamLake",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3d18d4e01ecf8d4e23104e4580ca592f",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

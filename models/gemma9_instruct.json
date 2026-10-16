@@ -1,0 +1,24 @@
+{
+ "id": "gemma9_instruct",
+ "label": "gemma9_instruct",
+ "kind": "local",
+ "local_kind": "instruct",
+ "checkpoint": {
+  "repo": "google/gemma-2-9b-it",
+  "revision": "11c9b309abf73637e4b6f9a3fa1e92e615547819",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-08-27"
+ },
+ "adapter": null,
+ "frames": [
+  "chat",
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "gemma9",
+ "template": {
+  "system_role": "fold",
+  "chat_answer_prefix": "",
+  "notes": null
+ }
+}

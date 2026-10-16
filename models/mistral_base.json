@@ -1,0 +1,18 @@
+{
+ "id": "mistral_base",
+ "label": "mistral_base",
+ "kind": "local",
+ "local_kind": "base",
+ "checkpoint": {
+  "repo": "mistralai/Mistral-7B-v0.3",
+  "revision": "caa1feb0e54d415e2df31207e5f4e273e33509b1",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2025-07-24"
+ },
+ "adapter": null,
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "mistral"
+}

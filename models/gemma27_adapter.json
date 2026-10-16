@@ -1,0 +1,21 @@
+{
+ "id": "gemma27_adapter",
+ "label": "gemma27_adapter",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "google/gemma-2-27b",
+  "revision": "938270f5272feb02779b55c2bb2fffdd0f53ff0c",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-08-07"
+ },
+ "adapter": {
+  "repo": "Cassian/gemma-2-27b-due-care-adapter",
+  "digest": "5f8f36a73d5b9e45"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "gemma27"
+}

@@ -1,0 +1,86 @@
+{
+ "id": "gemini_r",
+ "label": "Gemini 3.8 Flash",
+ "kind": "api",
+ "config_set": "on",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8,
+    "model": "google/gemini-3.8-flash",
+    "provider": "Google AI Studio",
+    "reasoning": {
+     "effort": "low"
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 1080,
+   "other_settings_in_the_logs": [
+    {
+     "max_tokens": 2048,
+     "model": "google/gemini-3.8-flash",
+     "provider": "Google AI Studio",
+     "reasoning": {
+      "effort": "low"
+     },
+     "temperature": 1.0,
+     "want_logprobs": false
+    }
+   ],
+   "wire_sha": "773020dedafe76053d453775449d3243",
+   "readout": "reasoning"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1024,
+    "model": "google/gemini-3.8-flash",
+    "provider": "google-vertex",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "96df04a4b08d4bbd2dd5d04834cdaaeb",
+   "readout": "reasoning"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1024,
+    "model": "google/gemini-3.8-flash",
+    "provider": "google-vertex",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "96df04a4b08d4bbd2dd5d04834cdaaeb",
+   "readout": "reasoning"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 2048,
+    "model": "google/gemini-3.8-flash",
+    "provider": "google-vertex",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "34a409ae6ba3d094ba037d1f17a07dc2",
+   "readout": "reasoning"
+  }
+ },
+ "reasoning_declared": [
+  "\"vendor_default\"",
+  "{\"effort\": \"low\"}"
+ ],
+ "vendor_default": true
+}

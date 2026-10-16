@@ -1,0 +1,21 @@
+{
+ "id": "falcon3_adapter",
+ "label": "falcon3_adapter",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "tiiuae/Falcon3-7B-Base",
+  "revision": "bf3d7ed586cb22a921520e2d681a9d3d7642cde8",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-12-17"
+ },
+ "adapter": {
+  "repo": "Cassian/Falcon3-7B-Base-due-care-adapter",
+  "digest": "66aeabc07ce5f4f7"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "falcon3"
+}

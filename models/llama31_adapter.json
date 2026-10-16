@@ -1,0 +1,21 @@
+{
+ "id": "llama31_adapter",
+ "label": "llama31_adapter",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "meta-llama/Llama-3.1-8B",
+  "revision": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-10-16"
+ },
+ "adapter": {
+  "repo": "Cassian/Llama-3.1-8B-due-care-adapter",
+  "digest": "2b91053a0a8d4bb8"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "llama31"
+}

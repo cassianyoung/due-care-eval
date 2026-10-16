@@ -1,0 +1,80 @@
+{
+ "id": "gpt6s_s",
+ "label": "gpt-6-sol",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 100,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "5d61f5ab09b6f01dfa5a5f235f1fd0e5",
+   "readout": "sampled"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1024,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "61f05cb005eebf88dfd3a1cbb2416496",
+   "readout": "sampled"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1024,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "61f05cb005eebf88dfd3a1cbb2416496",
+   "readout": "sampled"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "openai/gpt-6-sol",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "6af9257de0344c33857294ce14baa8ac",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

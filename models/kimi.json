@@ -1,0 +1,83 @@
+{
+ "id": "kimi",
+ "label": "Kimi-K3",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "moonshotai/kimi-k3",
+    "provider": "Sail Research",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 100,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3c3e5c749cf73a0923565bae7bc5ec4c",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "moonshotai/kimi-k3",
+    "provider": "Sail Research",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3c3e5c749cf73a0923565bae7bc5ec4c",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "moonshotai/kimi-k3",
+    "provider": "Sail Research",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3c3e5c749cf73a0923565bae7bc5ec4c",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "moonshotai/kimi-k3",
+    "provider": "Sail Research",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "1bdf0d6951b098985858f307fb25c55b",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

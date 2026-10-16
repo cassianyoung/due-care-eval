@@ -1,0 +1,83 @@
+{
+ "id": "qwen80b",
+ "label": "Qwen3-Next-80B",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-next-80b-a3b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 540,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "052612a83de8a7243d9892d41359517b",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-next-80b-a3b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "052612a83de8a7243d9892d41359517b",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-next-80b-a3b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "052612a83de8a7243d9892d41359517b",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "qwen/qwen3-next-80b-a3b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "50f413993dadd816ed3900d8d71e2ac0",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

@@ -1,0 +1,24 @@
+{
+ "id": "mistral_instruct",
+ "label": "mistral_instruct",
+ "kind": "local",
+ "local_kind": "instruct",
+ "checkpoint": {
+  "repo": "mistralai/Mistral-7B-Instruct-v0.3",
+  "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2025-12-03"
+ },
+ "adapter": null,
+ "frames": [
+  "chat",
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "mistral",
+ "template": {
+  "system_role": "native",
+  "chat_answer_prefix": " ",
+  "notes": null
+ }
+}

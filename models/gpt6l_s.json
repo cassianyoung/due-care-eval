@@ -1,0 +1,80 @@
+{
+ "id": "gpt6l_s",
+ "label": "gpt-6-luna",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 100,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "ebd90613e6c6c29b91b149bee4c81bea",
+   "readout": "sampled"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1024,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "e7aa7cc0e4421a8e2c130818cd66bd3a",
+   "readout": "sampled"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1024,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "e7aa7cc0e4421a8e2c130818cd66bd3a",
+   "readout": "sampled"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "c4a30ab139a5595bcce3998463e48951",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

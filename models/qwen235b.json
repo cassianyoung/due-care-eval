@@ -1,0 +1,83 @@
+{
+ "id": "qwen235b",
+ "label": "Qwen3-235B-A22B",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "provider": "GMICloud",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 5,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 540,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "df5aca5a6b0d2b07c28f573c17dffcc4",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "provider": "GMICloud",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 5,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "df5aca5a6b0d2b07c28f573c17dffcc4",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "provider": "GMICloud",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 5,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "df5aca5a6b0d2b07c28f573c17dffcc4",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "qwen/qwen3-235b-a22b-2507",
+    "provider": "GMICloud",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "52125673371a28166049a61d0789a535",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

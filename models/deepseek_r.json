@@ -1,0 +1,79 @@
+{
+ "id": "deepseek_r",
+ "label": "DeepSeek-V4.1-Flash (reasoning)",
+ "kind": "api",
+ "config_set": "on",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Sail Research",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 5,
+   "n_calls": 50,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "4e3c525eda7173da326f317935127afa",
+   "readout": "reasoning"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Sail Research",
+    "reasoning": {
+     "effort": "low"
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "a10c45145a4ebb01e6a85285c2f6204d",
+   "readout": "reasoning"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Sail Research",
+    "reasoning": {
+     "effort": "low"
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "a10c45145a4ebb01e6a85285c2f6204d",
+   "readout": "reasoning"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "deepseek/deepseek-v4.1-flash",
+    "provider": "Sail Research",
+    "reasoning": {
+     "effort": "low"
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "a10c45145a4ebb01e6a85285c2f6204d",
+   "readout": "reasoning"
+  }
+ },
+ "reasoning_declared": [
+  "\"vendor_default\"",
+  "{\"effort\": \"low\"}"
+ ],
+ "vendor_default": true
+}

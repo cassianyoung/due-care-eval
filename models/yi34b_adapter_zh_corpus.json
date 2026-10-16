@@ -1,0 +1,21 @@
+{
+ "id": "yi34b_adapter_zh_corpus",
+ "label": "yi34b_adapter_zh_corpus",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "01-ai/Yi-1.5-34B",
+  "revision": "58a29f6dca2a4eda38821c086c29c1906114aabb",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-06-26"
+ },
+ "adapter": {
+  "repo": "Cassian/Yi-1.5-34B-due-care-adapter-zh",
+  "digest": "4c96ef616f13b3c4"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "yi34b"
+}

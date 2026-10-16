@@ -1,0 +1,80 @@
+{
+ "id": "haiku_s",
+ "label": "Claude Haiku 4.5",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 16,
+    "model": "anthropic/claude-haiku-4.5",
+    "provider": "Anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 100,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "5ac65e5fb8e6f0957cc9c3b5cc18a383",
+   "readout": "sampled"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "anthropic/claude-haiku-4.5",
+    "provider": "Anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3b3e447b795fcade58770a33010fb5d7",
+   "readout": "sampled"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "anthropic/claude-haiku-4.5",
+    "provider": "Anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3b3e447b795fcade58770a33010fb5d7",
+   "readout": "sampled"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "anthropic/claude-haiku-4.5",
+    "provider": "Anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "3b3e447b795fcade58770a33010fb5d7",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

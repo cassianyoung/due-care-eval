@@ -1,0 +1,18 @@
+{
+ "id": "qwen3_base",
+ "label": "qwen3_base",
+ "kind": "local",
+ "local_kind": "base",
+ "checkpoint": {
+  "repo": "Qwen/Qwen3-8B-Base",
+  "revision": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2025-05-21"
+ },
+ "adapter": null,
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "qwen3"
+}

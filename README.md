@@ -75,8 +75,8 @@ A Python installed by uv does not need `python3-venv`. For the dry run below, pa
 
 ## A dry run on GPT-2
 
-`scripts/dry_run.sh` runs the whole local path end to end on GPT-2 (124M), the one entry
-in `models/`. It creates `.venv` if there is none and installs the package with the local
+`scripts/dry_run.sh` runs the whole local path end to end on GPT-2 (124M), the dry-run
+entry in `models/`. It creates `.venv` if there is none and installs the package with the local
 extras. It then downloads GPT-2 at its pinned revision and verifies every weight file
 against the Hub's SHA-256. It reads both tests on the worksheet frame (300 excuse-test and
 270 duty-test readings: each cell under the five worksheet orderings), builds the
@@ -117,8 +117,9 @@ banks render. The database must hold every reading. GPT-2 is not expected to rea
 scale, so its gate verdicts are printed and not checked. A failing check exits non-zero
 and names what failed.
 
-To dry-run a different model, add its entry to `models/` (see Adding a model) and run the
-same two `inspect eval` commands the script runs, with `--model due_care/<model-id>`.
+To dry-run a different model, use its entry in `models/` (see Ready-made entries, and
+Adding a model for others) and run the same two `inspect eval` commands the script runs,
+with `--model due_care/<model-id>`.
 
 ## Run
 
@@ -232,6 +233,17 @@ The temperature is part of each wire setting and is not enforced. A sampled mean
 estimates the same quantity as a log-probability expected value only at temperature 1,
 so set 1.0 wherever the two readouts are to be compared.
 
+## Ready-made entries
+
+`models/` holds 61 ready-made entries, so a model listed there needs no entry written: 22
+deployed models with the wire settings each is read on (model, provider, readout, draws,
+temperature, reasoning), and open-weight base, adapter and instruction-tuned checkpoints
+pinned to a commit, each adapter with its digest. Each loads through `model_table.load`.
+Fields beyond those described below (`wire_sha`, `n_calls`, `other_settings_in_the_logs`,
+`revision_label`, `hub_last_commit`, `family`) record where a setting came from and are
+not read by the harness; each `wire_sha` equals the hash the harness computes from that
+entry's wire, so a reading taken from the entry carries the same wire hash.
+
 ## Adding a model
 
 Add `models/<model-id>.json`. An API entry:
@@ -299,7 +311,7 @@ its repository and commit or its path.
 | `harness/` | the readers: `local.py` (weights, verification, teacher-forced scoring), `api.py` (the API client and its rules), `frames.py` (prompt rendering) |
 | `due_care/` | the Inspect package: datasets, solvers, scorers, metrics, tasks, report |
 | `db/` | the database schema and every view, and `build_from_readings.py` |
-| `models/` | the model table: `gpt2.json`, the dry-run model |
+| `models/` | the model table: 61 ready-made entries (see Ready-made entries) and `gpt2.json`, the dry-run model |
 | `scripts/` | `dry_run.sh` and `dry_run_check.py` |
 | `tests/` | offline tests, `python tests/run_all.py`; `tests/fixtures/` holds the test-only model entries and the worksheet prompt hashes |
 

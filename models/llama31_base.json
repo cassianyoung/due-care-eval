@@ -1,0 +1,18 @@
+{
+ "id": "llama31_base",
+ "label": "llama31_base",
+ "kind": "local",
+ "local_kind": "base",
+ "checkpoint": {
+  "repo": "meta-llama/Llama-3.1-8B",
+  "revision": "d04e592bb4f6aa9cfee91e2e20afa771667e1d4b",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-10-16"
+ },
+ "adapter": null,
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "llama31"
+}

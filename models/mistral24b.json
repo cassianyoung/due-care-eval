@@ -1,0 +1,83 @@
+{
+ "id": "mistral24b",
+ "label": "Mistral-Small-3.2-24B",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 20,
+   "n_calls": 376,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "b65388951f89fd1a5309d0b4b7901c11",
+   "readout": "logprob"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "b65388951f89fd1a5309d0b4b7901c11",
+   "readout": "logprob"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 1,
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "top_k": 20,
+    "want_logprobs": true
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "b65388951f89fd1a5309d0b4b7901c11",
+   "readout": "logprob"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "mistralai/mistral-small-3.2-24b-instruct",
+    "provider": "Parasail",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 40,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "ef5cfe964ea0ba8349af74d1645a817a",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

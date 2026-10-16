@@ -1,0 +1,72 @@
+{
+ "id": "gpt6l_r",
+ "label": "gpt-6-luna (reasoning)",
+ "kind": "api",
+ "config_set": "on",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 100,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "5ea4eb97a167b272993fe9cae4278d49",
+   "readout": "reasoning"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "5ea4eb97a167b272993fe9cae4278d49",
+   "readout": "reasoning"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "5ea4eb97a167b272993fe9cae4278d49",
+   "readout": "reasoning"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "openai/gpt-6-luna",
+    "provider": "openai",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "5ea4eb97a167b272993fe9cae4278d49",
+   "readout": "reasoning"
+  }
+ },
+ "reasoning_declared": [
+  "\"vendor_default\""
+ ],
+ "vendor_default": true
+}

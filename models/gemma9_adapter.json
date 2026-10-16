@@ -1,0 +1,21 @@
+{
+ "id": "gemma9_adapter",
+ "label": "gemma9_adapter",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "google/gemma-2-9b",
+  "revision": "33c193028431c2fde6c6e51f29e6f17b60cbfac6",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-08-07"
+ },
+ "adapter": {
+  "repo": "Cassian/gemma-2-9b-due-care-adapter",
+  "digest": "15ac53501d7e2468"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "gemma9"
+}

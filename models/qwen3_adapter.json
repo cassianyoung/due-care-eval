@@ -1,0 +1,21 @@
+{
+ "id": "qwen3_adapter",
+ "label": "qwen3_adapter",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "Qwen/Qwen3-8B-Base",
+  "revision": "49e3418fbbbca6ecbdf9608b4d22e5a407081db4",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2025-05-21"
+ },
+ "adapter": {
+  "repo": "Cassian/Qwen3-8B-Base-due-care-adapter",
+  "digest": "b99b83198da17ff6"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "qwen3"
+}

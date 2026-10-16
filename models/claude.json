@@ -1,0 +1,80 @@
+{
+ "id": "claude",
+ "label": "Claude Sonnet 5",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {
+    "max_tokens": 8,
+    "model": "anthropic/claude-sonnet-5",
+    "provider": "Anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 20,
+   "n_calls": 1080,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "abccf295c590e0c9dbed52d2b7b9f11d",
+   "readout": "sampled"
+  },
+  "scenarios": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "anthropic/claude-sonnet-5",
+    "provider": "anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "4e258c4777432a3a82913df8d8234845",
+   "readout": "sampled"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "anthropic/claude-sonnet-5",
+    "provider": "anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 520,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "4e258c4777432a3a82913df8d8234845",
+   "readout": "sampled"
+  },
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 256,
+    "model": "anthropic/claude-sonnet-5",
+    "provider": "anthropic",
+    "reasoning": {
+     "enabled": false
+    },
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "4e258c4777432a3a82913df8d8234845",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "{\"enabled\": false}"
+ ],
+ "vendor_default": false
+}

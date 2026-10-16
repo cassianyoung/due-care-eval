@@ -1,0 +1,18 @@
+{
+ "id": "stablelm12b_base",
+ "label": "stablelm12b_base",
+ "kind": "local",
+ "local_kind": "base",
+ "checkpoint": {
+  "repo": "stabilityai/stablelm-2-12b",
+  "revision": "74dd3f536b71d18aa122a11af0d1b83105cb2d38",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-07-10"
+ },
+ "adapter": null,
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "stablelm12b"
+}

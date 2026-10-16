@@ -1,0 +1,21 @@
+{
+ "id": "mistral_adapter",
+ "label": "mistral_adapter",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "mistralai/Mistral-7B-v0.3",
+  "revision": "caa1feb0e54d415e2df31207e5f4e273e33509b1",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2025-07-24"
+ },
+ "adapter": {
+  "repo": "Cassian/Mistral-7B-v0.3-due-care-adapter",
+  "digest": "ab7af6e68e4449ea"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "mistral"
+}

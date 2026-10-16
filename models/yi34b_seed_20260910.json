@@ -1,0 +1,22 @@
+{
+ "id": "yi34b_seed_20260910",
+ "label": "yi34b_seed_20260910",
+ "kind": "local",
+ "local_kind": "adapter",
+ "checkpoint": {
+  "repo": "01-ai/Yi-1.5-34B",
+  "revision": "58a29f6dca2a4eda38821c086c29c1906114aabb",
+  "revision_label": "inferred: main unchanged on the Hub since before the read",
+  "hub_last_commit": "2024-06-26"
+ },
+ "adapter": {
+  "repo": "Cassian/Yi-1.5-34B-due-care-adapter-en-seeds",
+  "subfolder": "s20260910",
+  "digest": "cbd086d8d21a6415"
+ },
+ "frames": [
+  "worksheet"
+ ],
+ "spec": "cuda:bfloat16",
+ "family": "yi34b"
+}

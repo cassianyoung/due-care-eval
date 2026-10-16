@@ -1,0 +1,42 @@
+{
+ "id": "gemini_pro",
+ "label": "Gemini 3.1 Pro",
+ "kind": "api",
+ "config_set": "on",
+ "wire": {
+  "duty_comparison": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "google/gemini-3.1-pro-preview",
+    "provider": "google-vertex",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 20,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "94f0bcfaa46e2539228727327fda0d10",
+   "readout": "sampled"
+  },
+  "duty_separate": {
+   "wire": {
+    "max_tokens": 8192,
+    "model": "google/gemini-3.1-pro-preview",
+    "provider": "google-vertex",
+    "reasoning": "vendor_default",
+    "temperature": 1.0,
+    "want_logprobs": false
+   },
+   "draws": 10,
+   "n_calls": 760,
+   "other_settings_in_the_logs": [],
+   "wire_sha": "94f0bcfaa46e2539228727327fda0d10",
+   "readout": "sampled"
+  }
+ },
+ "reasoning_declared": [
+  "\"vendor_default\""
+ ],
+ "vendor_default": true
+}
