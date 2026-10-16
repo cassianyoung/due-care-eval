@@ -1,0 +1,14 @@
+{
+ "id": "example_vendor_default",
+ "label": "An API model read by sampling under the vendor's reasoning default (test fixture)",
+ "kind": "api",
+ "config_set": "on",
+ "wire": {
+  "scenarios": {
+   "wire": {"model": "vendor/example-reasoner", "provider": "ExampleProvider",
+            "max_tokens": 4096, "want_logprobs": false, "temperature": 1.0,
+            "reasoning": "vendor_default"},
+   "readout": "reasoning"}
+ },
+ "vendor_default": true
+}

@@ -1,0 +1,13 @@
+{
+ "comparison": {
+  "system": "You are a rating instrument. Reply in exactly the form requested and nothing else.",
+  "body": "{text}",
+  "parse": "<LABEL>\\s*=\\s*(\\d)",
+  "gap": "professional minus private, whichever is listed first"
+ },
+ "separate": {
+  "question": "BLAME",
+  "agent": "Alaric",
+  "see": "excuse_questions.json"
+ }
+}

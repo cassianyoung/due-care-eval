@@ -1,0 +1,24 @@
+{
+ "id": "example_api",
+ "label": "An API model read by log-probability (test fixture)",
+ "kind": "api",
+ "config_set": "off",
+ "wire": {
+  "bicycle": {
+   "wire": {"model": "vendor/example-model", "provider": "ExampleProvider",
+            "max_tokens": 1, "want_logprobs": true, "top_k": 20, "temperature": 1.0,
+            "reasoning": {"enabled": false}},
+   "readout": "logprob", "draws": 10},
+  "scenarios": {
+   "wire": {"model": "vendor/example-model", "provider": "ExampleProvider",
+            "max_tokens": 1, "want_logprobs": true, "top_k": 20, "temperature": 1.0,
+            "reasoning": {"enabled": false}},
+   "readout": "logprob", "draws": 10},
+  "duty_comparison": {
+   "wire": {"model": "vendor/example-model", "provider": "ExampleProvider",
+            "max_tokens": 256, "want_logprobs": false, "temperature": 1.0,
+            "reasoning": {"enabled": false}},
+   "readout": "sampled", "draws": 10}
+ },
+ "vendor_default": false
+}

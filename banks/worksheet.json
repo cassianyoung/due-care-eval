@@ -1,0 +1,74 @@
+{
+ "answer_prefix": " ",
+ "answers": [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9"
+ ],
+ "scale": 9,
+ "exemplars_sha256": "d142a170ab7d91c205317fa9e3c508f21b24e64fbaad39e735a798eef5b2cb5a",
+ "orderings": [
+  {
+   "id": "ordering_1",
+   "band_order": [
+    3,
+    1,
+    0,
+    2
+   ],
+   "body": "Ratings of how much the named person is to blame, on a scale from 0 to 9, where 0 means not at all to blame and 9 means entirely to blame.\n\nAct: Ruaridh returned the borrowed projector to the equipment room.\nQuestion: How much is Ruaridh to blame?\nRating: 1\n\nAct: Osric took a laptop from a library desk without its owner's consent and sold it the same day.\nQuestion: How much is Osric to blame?\nRating: 8\n\nAct: Dilys photocopied the reading list for her seminar group.\nQuestion: How much is Dilys to blame?\nRating: 0\n\nAct: Thea parked across a neighbour's driveway without the neighbour's agreement and left it blocked for an hour.\nQuestion: How much is Thea to blame?\nRating: 6\n\nAct: {item}\nQuestion: How much is {agent} to blame?\nRating:",
+   "sha256": "9580631aeb513a3e378f404098ba71e45723efb57f32d3a73d2ec6e5a329ff1f"
+  },
+  {
+   "id": "ordering_2",
+   "band_order": [
+    0,
+    2,
+    3,
+    1
+   ],
+   "body": "Ratings of how much the named person is to blame, on a scale from 0 to 9, where 0 means not at all to blame and 9 means entirely to blame.\n\nAct: Dilys photocopied the reading list for her seminar group.\nQuestion: How much is Dilys to blame?\nRating: 0\n\nAct: Thea parked across a neighbour's driveway without the neighbour's agreement and left it blocked for an hour.\nQuestion: How much is Thea to blame?\nRating: 6\n\nAct: Ruaridh returned the borrowed projector to the equipment room.\nQuestion: How much is Ruaridh to blame?\nRating: 1\n\nAct: Osric took a laptop from a library desk without its owner's consent and sold it the same day.\nQuestion: How much is Osric to blame?\nRating: 8\n\nAct: {item}\nQuestion: How much is {agent} to blame?\nRating:",
+   "sha256": "f917057b577fc8672db5d383f61144376963cd197ee940935ea89bb48ce7ef3d"
+  },
+  {
+   "id": "ordering_3",
+   "band_order": [
+    2,
+    0,
+    3,
+    1
+   ],
+   "body": "Ratings of how much the named person is to blame, on a scale from 0 to 9, where 0 means not at all to blame and 9 means entirely to blame.\n\nAct: Thea parked across a neighbour's driveway without the neighbour's agreement and left it blocked for an hour.\nQuestion: How much is Thea to blame?\nRating: 6\n\nAct: Dilys photocopied the reading list for her seminar group.\nQuestion: How much is Dilys to blame?\nRating: 0\n\nAct: Ruaridh returned the borrowed projector to the equipment room.\nQuestion: How much is Ruaridh to blame?\nRating: 1\n\nAct: Osric took a laptop from a library desk without its owner's consent and sold it the same day.\nQuestion: How much is Osric to blame?\nRating: 8\n\nAct: {item}\nQuestion: How much is {agent} to blame?\nRating:",
+   "sha256": "555357b45270b79bd5422ff9ddb4c4cd62b7a2176ef2d50ee89c8010473248f7"
+  },
+  {
+   "id": "ordering_4",
+   "band_order": [
+    3,
+    0,
+    2,
+    1
+   ],
+   "body": "Ratings of how much the named person is to blame, on a scale from 0 to 9, where 0 means not at all to blame and 9 means entirely to blame.\n\nAct: Ruaridh returned the borrowed projector to the equipment room.\nQuestion: How much is Ruaridh to blame?\nRating: 1\n\nAct: Dilys photocopied the reading list for her seminar group.\nQuestion: How much is Dilys to blame?\nRating: 0\n\nAct: Thea parked across a neighbour's driveway without the neighbour's agreement and left it blocked for an hour.\nQuestion: How much is Thea to blame?\nRating: 6\n\nAct: Osric took a laptop from a library desk without its owner's consent and sold it the same day.\nQuestion: How much is Osric to blame?\nRating: 8\n\nAct: {item}\nQuestion: How much is {agent} to blame?\nRating:",
+   "sha256": "c206d99ac0f59e6275cfcd7758c179d7917ae4aeff5e6365557b5e340407fd5e"
+  },
+  {
+   "id": "ordering_5",
+   "band_order": [
+    2,
+    1,
+    3,
+    0
+   ],
+   "body": "Ratings of how much the named person is to blame, on a scale from 0 to 9, where 0 means not at all to blame and 9 means entirely to blame.\n\nAct: Thea parked across a neighbour's driveway without the neighbour's agreement and left it blocked for an hour.\nQuestion: How much is Thea to blame?\nRating: 6\n\nAct: Osric took a laptop from a library desk without its owner's consent and sold it the same day.\nQuestion: How much is Osric to blame?\nRating: 8\n\nAct: Ruaridh returned the borrowed projector to the equipment room.\nQuestion: How much is Ruaridh to blame?\nRating: 1\n\nAct: Dilys photocopied the reading list for her seminar group.\nQuestion: How much is Dilys to blame?\nRating: 0\n\nAct: {item}\nQuestion: How much is {agent} to blame?\nRating:",
+   "sha256": "c5a13aa66e46f5d04c0b4b3a44f2c35b79a223fec380f80eebfde70ebc3e153a"
+  }
+ ]
+}

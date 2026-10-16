@@ -1,0 +1,28 @@
+{
+ "files": {
+  "excuse_cases.jsonl": "1cd12277ad7aaaf1c52461dc632e7eb6be73a2d5465fd13885b91a8c7adeeb58",
+  "excuse_questions.json": "7bd6b7430327a14f3cb162e2fb47eaeb7ed90de8eec726afd7beb85553018424",
+  "worksheet.json": "075ef6433f843ae8488290c5320694d223d6c65731005c3d32200e30256090fb",
+  "duty_pairs.json": "c3cf895ccf1bfa6baad39350433ec323715ffbc0c8693ebbc9b2e169afda5522",
+  "duty_texts.jsonl": "b2081841ad5a0189f6330f05e0864f521bd295d9c9caf57ef79672942ec41bb5",
+  "duty_questions.json": "7090b29479617ba87edd9b25beb016f40259e8ec1049c38dc5f4f9b8b4799b9f"
+ },
+ "n_excuse_cases": 62,
+ "n_duty_texts": 66,
+ "scenarios": [
+  "bicycle",
+  "cheque",
+  "ladder",
+  "prawns_home",
+  "prawns_restaurant",
+  "scaffolding"
+ ],
+ "duty_pairs": [
+  "prawns",
+  "1",
+  "3",
+  "4",
+  "5",
+  "7"
+ ]
+}

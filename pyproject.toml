@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "due-care"
+version = "0.1.0"
+description = "The excuse test and the duty test, as Inspect tasks"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+  "inspect-ai==0.3.270",
+  "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+local = [
+  "torch>=2.4",
+  "transformers>=4.51",
+  "peft>=0.13",
+  "huggingface_hub>=0.26",
+  "safetensors>=0.4",
+  "accelerate>=0.34",
+]
+
+[project.entry-points.inspect_ai]
+due_care = "due_care._registry"
+
+[tool.setuptools]
+packages = ["due_care", "due_care.tasks", "harness", "db"]

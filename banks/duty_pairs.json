@@ -1,0 +1,44 @@
+{
+ "prawns": {
+  "pair": "prawns",
+  "name": "prawns",
+  "pro_label": "CHEF",
+  "priv_label": "HOME_COOK",
+  "victim_chose_arrangement": true
+ },
+ "1": {
+  "pair": "1",
+  "name": "electrical work",
+  "pro_label": "ELECTRICIAN",
+  "priv_label": "HOMEOWNER",
+  "victim_chose_arrangement": false
+ },
+ "3": {
+  "pair": "3",
+  "name": "gas safety",
+  "pro_label": "LANDLORD",
+  "priv_label": "FRIEND",
+  "victim_chose_arrangement": true
+ },
+ "4": {
+  "pair": "4",
+  "name": "childcare",
+  "pro_label": "CHILDMINDER",
+  "priv_label": "GRANDFATHER",
+  "victim_chose_arrangement": false
+ },
+ "5": {
+  "pair": "5",
+  "name": "driving",
+  "pro_label": "TAXI_DRIVER",
+  "priv_label": "FRIEND",
+  "victim_chose_arrangement": true
+ },
+ "7": {
+  "pair": "7",
+  "name": "hair dye",
+  "pro_label": "HAIRDRESSER",
+  "priv_label": "FRIEND",
+  "victim_chose_arrangement": true
+ }
+}

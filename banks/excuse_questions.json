@@ -1,0 +1,88 @@
+{
+ "BLAME": {
+  "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+  "body": "{item} How much is {agent} to blame, on a scale from 0 to 9, where 0 means not at all to blame and 9 means entirely to blame? Answer with a single digit.",
+  "sha256": "d78642ff1ca5a8f2cc1fafa3ffe8b5cecde72c0d116d0110bb0d1a94b4ee4783",
+  "item_placement": "in body",
+  "answers": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9"
+  ]
+ },
+ "REASONABLE": {
+  "system": "Answer with one word, Yes or No, and nothing else.",
+  "body": "Could {agent} reasonably have prevented this? Answer yes or no.",
+  "sha256": "618e7f8464f5d2143b90780028a4d63de9269c4a67a28b58ce3e0e19d39f65c2",
+  "item_placement": "case, blank line, body",
+  "answers": [
+   "Yes",
+   "No"
+  ]
+ },
+ "CARELESS": {
+  "system": "Answer with one word, Yes or No, and nothing else.",
+  "body": "Did {agent} do anything careless? Answer Yes or No.",
+  "sha256": "b967d7e508ff63021cf397c54bc61c84707d9327d6c9aa17b75e81228a681e29",
+  "item_placement": "case, blank line, body",
+  "answers": [
+   "Yes",
+   "No"
+  ]
+ },
+ "CAUSE": {
+  "per_scenario": {
+   "cheque": {
+    "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+    "body": "{item} How much did {agent} cause the plumber's bank charge, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+    "sha256": "faff5dc63c18efdfe0ad2dd089328e089d60fd04a247bb3f57416f6c285942a2"
+   },
+   "ladder": {
+    "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+    "body": "{item} How much did {agent} cause the neighbour's injury, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+    "sha256": "f0dfc0385ad7adbd2f8c7bcfa7df99b4db2f7c453abdbb85b94a495731da0e19"
+   },
+   "prawns_home": {
+    "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+    "body": "{item} How much did {agent} cause the guests' illness, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+    "sha256": "000d340a5950a74e1ef3b36465afbdbe84727feacd4182a192471e1b060e685c"
+   },
+   "prawns_restaurant": {
+    "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+    "body": "{item} How much did {agent} cause the diners' illness, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+    "sha256": "6feb75a1b9946c57814a5f08272b141def209d7b1076ba75e70ca17d567c4885"
+   },
+   "scaffolding": {
+    "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+    "body": "{item} How much did {agent} cause the man's fall, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+    "sha256": "6f1f2b53bff827c003add44508415f03511c6c1ba8218cc2f91afe718ea1d523"
+   },
+   "bicycle": {
+    "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+    "body": "{item} How much did {agent} cause the rider's injury, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+    "sha256": "6166643fbe831e8884ab2d6ccdf2e29753d94a655f1574187da9318271457bea"
+   }
+  },
+  "item_placement": "in body",
+  "answers": [
+   "0",
+   "1",
+   "2",
+   "3",
+   "4",
+   "5",
+   "6",
+   "7",
+   "8",
+   "9"
+  ],
+  "not_interpretable_on_role": "N"
+ }
+}
