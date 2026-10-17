@@ -6,7 +6,7 @@
  "wire": {
   "bicycle": {
    "wire": {
-    "max_tokens": 8,
+    "max_tokens": 2048,
     "model": "google/gemini-3.8-flash",
     "provider": "Google AI Studio",
     "reasoning": {
@@ -16,21 +16,24 @@
     "want_logprobs": false
    },
    "draws": 20,
-   "n_calls": 1080,
+   "n_calls": 460,
    "other_settings_in_the_logs": [
     {
-     "max_tokens": 2048,
+     "max_tokens": 8,
      "model": "google/gemini-3.8-flash",
      "provider": "Google AI Studio",
      "reasoning": {
       "effort": "low"
      },
      "temperature": 1.0,
-     "want_logprobs": false
+     "want_logprobs": false,
+     "n_calls": 1080,
+     "withdrawn": "run 215's 8-token wire: most draws end in reasoning before any answer, and no draw that answers has reasoned, so its cells fail the 10% void rule. Withdrawn from the bicycle setting 2026-10-17."
     }
    ],
-   "wire_sha": "773020dedafe76053d453775449d3243",
-   "readout": "reasoning"
+   "wire_sha": "0e44796cb3bec3e8ff76edeb8cd2fa9f",
+   "readout": "reasoning",
+   "source": "run 214's bicycle read (460 calls, one setting throughout), the reading the paper reports"
   },
   "scenarios": {
    "wire": {

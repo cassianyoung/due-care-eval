@@ -265,4 +265,23 @@ T.check("its requests pin google-vertex with fallbacks off and leave reasoning a
         all((lambda p: p["provider"] == {"order": ["google-vertex"], "allow_fallbacks": False}
              and "reasoning" not in p)(API.payload_for(b["wire"], [])) for b in blocks.values()))
 
+# ── 7. GEMINI 3.8 FLASH'S BICYCLE WIRE IS RUN 214's, NOT RUN 215's WITHDRAWN ONE ─────
+# run 214's 460 bicycle calls used one setting throughout (as the reading's call log
+# records); run 215's 8-token setting truncates reasoning
+# before the answer and its cells are withdrawn
+RUN214 = {"max_tokens": 2048, "model": "google/gemini-3.8-flash",
+          "provider": "Google AI Studio", "reasoning": {"effort": "low"},
+          "temperature": 1.0, "want_logprobs": False}
+gr = MT.load("gemini_r")
+bw = MT.wire_group(gr, "bicycle")[1]
+T.check("gemini_r's bicycle wire is run 214's (2048 tokens, effort low, Google AI Studio)",
+        bw["wire"] == RUN214 and API.wire_sha(bw["wire"]) == bw["wire_sha"]
+        and bw["readout"] == "reasoning" and bw["draws"] == 20, bw["wire"])
+T.check("and run 215's 8-token wire is kept only as a withdrawn setting in the logs",
+        bw["wire"]["max_tokens"] != 8 and any(o.get("max_tokens") == 8 and o.get("withdrawn")
+                                               for o in bw["other_settings_in_the_logs"]))
+T.check("a bicycle cell on gemini_r is sent on that wire",
+        API.payload_for(bw["wire"], [])["max_tokens"] == 2048
+        and API.payload_for(bw["wire"], [])["reasoning"] == {"effort": "low"})
+
 T.done()

@@ -30,6 +30,12 @@ neutral sentences and full-text joint prompt described in the next section.
   or `-T roles=all`).
 - **Single cells, both tests:** `-T cells=` takes sample ids or a JSON file of them, and
   refuses any id the selection does not render.
+- **Gemini 3.8 Flash's bicycle wire corrected** (`models/gemini_r.json`): it was run 215's
+  8-token setting, on which the model's reasoning ends before any answer and every cell
+  fails the 10% void rule; it is now run 214's (2,048 tokens, effort low, Google AI
+  Studio), the reading the paper reports. The withdrawn setting stays listed under
+  `other_settings_in_the_logs` with the reason. Tested (`tests/test_v1_1_fill.py`).
+  Release candidate `v1.1-rc2`.
 - **Gemini 3.1 Pro on the excuse test:** `models/gemini_pro.json` gains `bicycle` and
   `scenarios` wires identical to its duty wire (sampled, 8,192 tokens, the vendor's
   default reasoning, google-vertex, 10 draws).
