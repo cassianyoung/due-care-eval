@@ -1,0 +1,24 @@
+{
+ "what": "Bank v1.1: the duty test's CAUSE question for the prawns pair, one question asked of both legs' separate cases. Its harm noun ('the illness') occurs in neither leg's case, so the question is the same on both legs.",
+ "source_bank_sha256": "526b6a8e39ccc49449345c43ecfc187d3cde515933dc34685cc44052a1c0cba2",
+ "cause": {
+  "prawns": {
+   "harm_noun": "the illness",
+   "system": "You are a rating instrument. Reply with a single digit from 0 to 9 and nothing else.",
+   "body": "{item} How much did {agent} cause the illness, on a scale from 0 to 9, where 0 means not at all and 9 means entirely? Answer with a single digit.",
+   "sha256": "1d11458b5b8bcaf8590ed3a6c35565b5a76a27921627eb3baee454616d06fc05",
+   "answers": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+   ]
+  }
+ }
+}

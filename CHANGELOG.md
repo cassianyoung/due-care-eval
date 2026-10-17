@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.1: the completeness fill
+
+Bank and task changes under AMENDMENT_V1_1_COMPLETENESS (2026-10-17), on top of the prawns
+neutral sentences and full-text joint prompt described in the next section.
+
+- **Prawns reference case** (`comparand`, 2 texts in `banks/duty_texts_v1_1.jsonl`):
+  "Reference case (for comparison only): " + the other leg's separate case with
+  "Alaric" replaced by "Another man" + " Case to rate: " + this leg's separate case. The
+  rule reproduces the study's banked reference cases for pairs 1, 3, 4, 5 and 7 byte for
+  byte (pair 5's are checked in the tests). Asked BLAME; chat frame only.
+- **Prawns duty CAUSE question** (`banks/duty_questions_v1_1.json`): "{item} How much did
+  {agent} cause the illness, on a scale from 0 to 9, where 0 means not at all and 9 means
+  entirely? Answer with a single digit." One question for both legs; its harm noun occurs
+  in neither leg's case. Asked of the separate cases; chat frame only.
+- **The stated gap uses the full-text prompt where read.** `duty_stated_gap` takes the
+  full-text side-by-side prompt's two orders where a model has read them and the v1.0
+  prompt's otherwise, never both (`stated_prompt` records which); the v1.0 prompt's
+  reading is in `duty_stated_gap_summary`. On v1.0 data nothing changes.
+- **The excuse test reads SUPPLIER and single roles:** `-T roles=` (SUPPLIER when named,
+  or `-T roles=all`).
+- **Single cells, both tests:** `-T cells=` takes sample ids or a JSON file of them, and
+  refuses any id the selection does not render.
+- **Gemini 3.1 Pro on the excuse test:** `models/gemini_pro.json` gains `bicycle` and
+  `scenarios` wires identical to its duty wire (sampled, 8,192 tokens, the vendor's
+  default reasoning, google-vertex, 10 draws).
+- **Tests:** new `tests/test_v1_1_fill.py` (39 checks), including a refused-cell check
+  made against a selection that is otherwise read, so it tests the cell check rather than
+  the empty-selection guard, and a check that the stated gap has one row per model and
+  pair.
+
 ## v1.1: prawns neutral sentences and a full-text prawns joint prompt
 
 Release candidate `v1.1-rc1`, 2026-10-17.
@@ -27,14 +57,13 @@ question and answer form, in both orders. Each case is the banked separate case 
 word except its subject, which is written as the other pairs write theirs (*"a chef at a
 restaurant served…"*, *"A man served…"*; the rule reproduces pair 5's banked joint
 prompts byte for byte). The labels are CHEF and HOME_COOK, from `duty_pairs.json`, as for
-the other pairs; the v1.0 prompt uses CHEF and HOME. It is read beside the v1.0 prompt
-(`-T conditions=joint_full`) and never enters the stated gap: `duty_stated_gap` is
-restricted to the v1.0 prompt's two orders (on v1.0 data, exactly what it always
-selected), and the new view `duty_stated_gap_full` carries the full-text reading.
+the other pairs; the v1.0 prompt uses CHEF and HOME. It is read with
+`-T conditions=joint_full`, and has its own view, `duty_stated_gap_full` (see above for
+how the stated gap now uses it).
 
 The eight texts are in a new file, `banks/duty_texts_v1_1.jsonl`. No v1.0 file is
 changed. `banks/MANIFEST.json` gains a `versions` block listing each version's files
-(v1.0: 66 duty texts; v1.1: 74).
+(v1.0: 66 duty texts; v1.1: 76, with the reference case above).
 
 **Effect on results.** In a v1.1 read the prawns deviations join each model's pooled
 wording floor (18 deviations rather than 15), so a model's floor, and the classes and

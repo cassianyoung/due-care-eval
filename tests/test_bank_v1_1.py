@@ -64,9 +64,11 @@ JOINT_FULL = {"full_pro_first": "776eb0eaf648ed896ada233228a9dba4db7c1b10dd58d17
 allv11 = F.load_jsonl("duty_texts_v1_1.jsonl")
 add = [r for r in allv11 if r["kind"] == "neutral"]
 joint = {r["variant"]: r for r in allv11 if r["kind"] == "comparison"}
-T.check("v1.1 adds eight prawns texts: six neutrals and two full-text joint prompts",
-        len(allv11) == 8 and all(r["pair"] == "prawns" for r in allv11)
-        and len(add) == 6 and sorted(joint) == sorted(JOINT_FULL), len(allv11))
+T.check("v1.1 adds ten prawns texts: six neutrals, two full-text joint prompts and two "
+        "reference cases (the last two in tests/test_v1_1_fill.py)",
+        len(allv11) == 10 and all(r["pair"] == "prawns" for r in allv11)
+        and len(add) == 6 and sorted(joint) == sorted(JOINT_FULL)
+        and sum(r["kind"] == "comparand" for r in allv11) == 2, len(allv11))
 T.check("each full-text joint prompt hashes to its pre-registered sha256",
         {v: r["sha256"] for v, r in joint.items()} == JOINT_FULL
         and all(sha(r["text"]) == r["sha256"] for r in joint.values()))
@@ -80,9 +82,9 @@ with open(os.path.join(F.BANKS, "duty_texts.jsonl"), "rb") as fh:
     T.check("the v1.0 duty file is unchanged (its v1.0 manifest digest)",
             hashlib.sha256(fh.read()).hexdigest()
             == "b2081841ad5a0189f6330f05e0864f521bd295d9c9caf57ef79672942ec41bb5")
-T.check("v1.0 lists no v1.1 file, and the counts are 66 and 74",
+T.check("v1.0 lists no v1.1 file, and the counts are 66 and 76",
         "duty_texts_v1_1.jsonl" not in man["versions"]["1.0"]["files"]
-        and len(F.load_duty_texts("1.0")) == 66 and len(F.load_duty_texts("1.1")) == 74)
+        and len(F.load_duty_texts("1.0")) == 66 and len(F.load_duty_texts("1.1")) == 76)
 sep = {r["leg"]: r["text"] for r in F.load_jsonl("duty_texts.jsonl")
        if r["pair"] == "prawns" and r["kind"] == "separate"}
 T.check("each added text is its sentence, one space, and the separate case verbatim",
@@ -126,8 +128,8 @@ T.raises("a tampered v1.1 text whose file no longer matches MANIFEST.json is ref
 T.raises("a tampered v1.1 text that no longer hashes to its row sha is refused, even with "
          "the manifest updated to match", F.BankError, with_banks,
          lambda b: _rewrite(b, True, False, True))
-T.check("the same copy, untampered, opens with 74 texts",
-        len(with_banks(lambda b: _rewrite(b, False, False, True)) or []) == 74)
+T.check("the same copy, untampered, opens with 76 texts",
+        len(with_banks(lambda b: _rewrite(b, False, False, True)) or []) == 76)
 
 # ── 3. THE SAME POSITION AS EVERY OTHER PAIR'S NEUTRALS, BOTH LEGS, BOTH READOUTS ────
 chat = D.duty_dataset("chat", conditions=("neutral",))
@@ -222,11 +224,12 @@ T.check(f"under bank 1.0 every prompt equals the pre-v1.1 rendering, byte for by
         f"({n} prompts)", r10 == FIX["datasets"],
         [k for k in FIX["datasets"] if r10.get(k) != FIX["datasets"][k]])
 T.check("under bank 1.1 every v1.0 prompt is unchanged, and the only additions are the "
-        "8 chat prompts (6 neutrals, 2 full-text joint) and 30 worksheet neutrals",
+        "12 duty chat prompts (6 neutrals, 2 full-text joint, 2 reference cases, 2 CAUSE) "
+        "and 30 worksheet neutrals",
         all(r11[k][i] == FIX["datasets"][k][i] for k in FIX["datasets"]
             for i in FIX["datasets"][k])
         and {k: len(set(r11[k]) - set(FIX["datasets"][k])) for k in r11}
-        == {"excuse_chat": 0, "excuse_chat_supplier": 0, "duty_chat": 8,
+        == {"excuse_chat": 0, "excuse_chat_supplier": 0, "duty_chat": 12,
             "excuse_worksheet": 0, "excuse_worksheet_supplier": 0, "duty_worksheet": 30})
 T.check("every duty sample of a 1.0 read records bank_version 1.0",
         all(s.metadata["bank_version"] == "1.0" for s in D.duty_dataset("chat", bank="1.0")))
@@ -391,12 +394,20 @@ cells = arm_cells(True) + [cmp_cell("cmp_pro_first", 7.0, 4.0),
 con = T.opens("a build with both prawns joint prompts opens", B.build, cells,
               entry_of=lambda mid: {"kind": "api", "config_set": "off", "wire": {}})
 if con is not None:
-    sg = con.execute("SELECT stated_gap, n_orders FROM duty_stated_gap WHERE arm='api1' "
-                     "AND pair_id='prawns'").fetchone()
+    rows = con.execute("SELECT stated_gap, n_orders FROM duty_stated_gap WHERE "
+                       "arm='api1' AND pair_id='prawns'").fetchall()
+    T.check(f"the stated gap has exactly one row per arm and pair ({len(rows)})",
+            len(rows) == 1, rows)
+    sg = rows[0] if rows else None
     fg = con.execute("SELECT stated_gap, n_orders, gap_pro_first, gap_priv_first FROM "
                      "duty_stated_gap_full WHERE arm='api1' AND pair_id='prawns'").fetchone()
-    T.check("the banked stated gap is the summary prompt's alone (2.5 over 2 orders)",
-            sg == (2.5, 2), sg)
+    T.check("with the full-text prompt read, the stated gap is the full-text prompt's "
+            "(5.5 over 2 orders), never the two prompts averaged (4.0 over 4)",
+            sg == (5.5, 2), sg)
+    ss = con.execute("SELECT stated_gap, n_orders FROM duty_stated_gap_summary WHERE "
+                     "arm='api1' AND pair_id='prawns'").fetchone()
+    T.check("the summary prompt's reading is kept in its own view (2.5 over 2 orders)",
+            ss == (2.5, 2), ss)
     T.check("the full-text stated gap is in its own view (5.5 over 2 orders, 5 and 6)",
             fg == (5.5, 2, 5.0, 6.0), fg)
 

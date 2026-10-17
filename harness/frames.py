@@ -73,6 +73,23 @@ def manifest_check(version=BANK_LATEST):
     return man
 
 
+# the duty CAUSE questions of each bank version: none in v1.0
+DUTY_QUESTION_FILES = {"1.0": (), "1.1": ("duty_questions_v1_1.json",)}
+
+
+def load_duty_cause(version=BANK_LATEST):
+    """{pair: CAUSE question} for a bank version, each body checked against its sha256."""
+    manifest_check(version)
+    out = {}
+    for name in DUTY_QUESTION_FILES[check_version(version)]:
+        for pid, q in load_json(name)["cause"].items():
+            if sha256(q["body"]) != q["sha256"]:
+                raise BankError(f"{name}: the {pid} CAUSE question does not hash to its "
+                                f"sha256")
+            out[pid] = q
+    return out
+
+
 def load_duty_texts(version=BANK_LATEST):
     """The duty texts of a bank version, each with the bank file it came from, every
     text checked against its sha256."""

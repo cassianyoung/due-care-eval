@@ -210,8 +210,13 @@ VIEWS = {
         WHERE p.status = 'control' AND c.status = 'read' AND c.preferred = 1
  """,
  # ── 1. THE STATED GAP, PER ORDER AND AS THE TWO-ORDER MEAN ────────────────────
- "duty_stated_gap": """
-    CREATE VIEW duty_stated_gap AS
+ # Two side-by-side prompts can exist for a pair: the v1.0 one (cmp_pro_first,
+ # cmp_priv_first) and, for prawns from bank v1.1, one that sets out the two separate
+ # cases in full (cmp_full_*). Each has its own view. The stated gap takes the full-text
+ # prompt's two orders where that arm has read them, and the v1.0 prompt's otherwise;
+ # the two are never averaged together. On v1.0 data it is the v1.0 prompt throughout.
+ "duty_stated_gap_summary": """
+    CREATE VIEW duty_stated_gap_summary AS
         SELECT run, arm, pair_id, pair_name,
                MAX(CASE WHEN condition = 'cmp_pro_first'
                         THEN score_pro - score_priv END) AS gap_pro_first,
@@ -231,12 +236,6 @@ VIEWS = {
           AND condition IN ('cmp_pro_first', 'cmp_priv_first')
         GROUP BY run, arm, pair_id, pair_name
  """,
- # ── 1b. THE STATED GAP FROM THE FULL-TEXT JOINT PROMPT (bank v1.1, prawns) ─────
- # The prawns pair's banked joint prompt is a summary of the two cases; v1.1 adds a
- # second one built from the two separate cases in full, as the other pairs' are. It is
- # a registered comparison and never enters duty_stated_gap: the stated gap, the share
- # and every class stay on the banked joint prompt, and this view carries the full-text
- # reading beside them.
  "duty_stated_gap_full": """
     CREATE VIEW duty_stated_gap_full AS
         SELECT run, arm, pair_id, pair_name,
@@ -248,10 +247,23 @@ VIEWS = {
                MAX(score_pro - score_priv) - MIN(score_pro - score_priv)
                    AS order_spread,
                COUNT(*) AS n_orders,
-               SUM(n_parsed) AS n_draws_parsed, SUM(n_draws) AS n_draws_asked
+               SUM(n_parsed) AS n_draws_parsed, SUM(n_draws) AS n_draws_asked,
+               CASE WHEN MIN(ABS(score_pro - score_priv)) = 0.0 THEN 1 ELSE 0 END
+                   AS exact_zero_in_an_order,
+               CASE WHEN MAX(score_pro - score_priv) > 0
+                     AND MIN(score_pro - score_priv) < 0 THEN 1 ELSE 0 END
+                   AS sign_differs_across_orders
         FROM duty_reported WHERE question = 'CMPN'
           AND condition IN ('cmp_full_pro_first', 'cmp_full_priv_first')
         GROUP BY run, arm, pair_id, pair_name
+ """,
+ "duty_stated_gap": """
+    CREATE VIEW duty_stated_gap AS
+        SELECT f.*, 'full_text' AS stated_prompt FROM duty_stated_gap_full f
+        UNION ALL
+        SELECT s.*, 'summary' AS stated_prompt FROM duty_stated_gap_summary s
+         WHERE NOT EXISTS (SELECT 1 FROM duty_stated_gap_full f
+                            WHERE f.arm = s.arm AND f.pair_id = s.pair_id)
  """,
  # ── 2. THE SEPARATE GAP, AND THE HEADROOM THAT BOUNDS IT ──────────────────────
  "duty_separate_gap": """

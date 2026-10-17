@@ -5,6 +5,8 @@ the chat frame, the filled worksheet on the worksheet frame); its metadata names
 cell and carries the SHA-256 of the bank text it was built from, which is re-checked
 against the bank before the sample is made.
 """
+import json
+
 from inspect_ai.dataset import MemoryDataset, Sample
 
 from harness import frames as F
@@ -83,9 +85,13 @@ def excuse_dataset(frame="chat", scenarios=SCENARIOS, questions=QUESTIONS,
 
 # The duty conditions a read can be narrowed to: a kind names every condition of that
 # kind, and a condition names itself.
-DUTY_KINDS = ("separate", "comparison", "stated", "neutral")
+DUTY_KINDS = ("separate", "comparison", "stated", "neutral", "comparand", "cause")
 DUTY_CONDITIONS = ("bare", "cmp_pro_first", "cmp_priv_first", "cmp_full_pro_first",
-                   "cmp_full_priv_first", "stated", "neutral_1", "neutral_2", "neutral_3")
+                   "cmp_full_priv_first", "stated", "neutral_1", "neutral_2", "neutral_3",
+                   "comparand")
+# read on the chat frame only, as the study read them: the side-by-side prompts (two
+# digits in one answer), the reference case and the duty CAUSE question
+CHAT_ONLY_KINDS = ("comparison", "comparand", "cause")
 # names for groups of conditions: the banked joint prompt in both orders, and the
 # full-text joint prompt (bank v1.1, prawns) in both orders
 DUTY_CONDITION_GROUPS = {"joint": ("cmp_pro_first", "cmp_priv_first"),
@@ -113,15 +119,20 @@ def duty_dataset(frame="chat", pairs=DUTY_PAIRS, legs=DUTY_KINDS, bank=F.BANK_LA
     for both scores. The comparison needs two digits in one answer, so it is read on the
     chat frame only.
 
-    `bank` is the bank version ("1.0" or "1.1"); v1.1 adds the prawns pair's neutral
-    sentences and leaves every v1.0 text as it was. `conditions` narrows the read to some
-    conditions, each a kind (separate, comparison, stated, neutral), a group (joint: the
-    banked joint prompt in both orders; joint_full: the full-text joint prompt in both
-    orders) or a condition (bare, cmp_pro_first, cmp_priv_first, cmp_full_pro_first,
-    cmp_full_priv_first, stated, neutral_1, neutral_2, neutral_3). An unknown pair or
+    `bank` is the bank version ("1.0" or "1.1"). v1.1 adds, for the prawns pair, its
+    neutral sentences, a full-text joint prompt, a reference case and a duty CAUSE
+    question, and leaves every v1.0 text as it was. `conditions` narrows the read to some
+    conditions, each a kind (separate, comparison, stated, neutral, comparand, cause), a
+    group (joint: the banked joint prompt in both orders; joint_full: the full-text joint
+    prompt in both orders) or a condition (bare, cmp_pro_first, cmp_priv_first,
+    cmp_full_pro_first, cmp_full_priv_first, stated, neutral_1, neutral_2, neutral_3,
+    comparand). The reference case asks BLAME of the case to rate, after a reference case
+    with another subject; the CAUSE question is asked of the separate cases. Comparison,
+    reference-case and CAUSE cells are read on the chat frame only. An unknown pair or
     condition is refused rather than read as an empty selection.
     """
     texts = F.load_duty_texts(bank)
+    cause_q = F.load_duty_cause(bank)
     _check_selection("pairs", pairs, DUTY_PAIRS)
     _check_selection("legs", legs, DUTY_KINDS)
     if conditions is not None:
@@ -139,6 +150,8 @@ def duty_dataset(frame="chat", pairs=DUTY_PAIRS, legs=DUTY_KINDS, bank=F.BANK_LA
         cond = _condition_of(t)
         if conditions is not None and t["kind"] not in conditions \
                 and cond not in conditions:
+            continue
+        if t["kind"] in CHAT_ONLY_KINDS and frame != "chat":
             continue
         meta = {"test": "duty", "pair": t["pair"], "leg": t["leg"], "kind": t["kind"],
                 "condition": cond, "text_sha256": t["sha256"], "frame": frame,
@@ -177,4 +190,58 @@ def duty_dataset(frame="chat", pairs=DUTY_PAIRS, legs=DUTY_KINDS, bank=F.BANK_LA
             metadata={**meta, "question": "BLAME", "ordering": "chat", "system": system,
                       "answers": qs["BLAME"]["answers"], "answer_prefix": "",
                       "group": "duty_separate"}))
+    # the duty CAUSE question (bank v1.1, prawns): one question, asked of both legs'
+    # separate cases on the chat frame
+    want_cause = "cause" in legs and (conditions is None or "cause" in conditions)
+    if frame == "chat" and want_cause:
+        for pid, q in cause_q.items():
+            if pid not in pairs:
+                continue
+            for t in texts:
+                if t["pair"] != pid or t["kind"] != "separate":
+                    continue
+                if F.subject_of(t["text"]) != SEPARATE_ALARIC:
+                    raise F.BankError(f"duty case {pid}/{t['leg']} does not name Alaric")
+                user = q["body"].format(item=t["text"], agent=SEPARATE_ALARIC)
+                if user.count("How much did Alaric cause") != 1 \
+                        or "to blame, on a scale from" in user:
+                    raise F.BankError(f"duty CAUSE {pid}/{t['leg']}: not one CAUSE question")
+                samples.append(Sample(
+                    id=f"{pid}|{t['leg']}|cause|chat", input=user,
+                    metadata={"test": "duty", "pair": pid, "leg": t["leg"],
+                              "kind": "cause", "condition": "bare",
+                              "text_sha256": t["sha256"], "frame": frame,
+                              "bank_version": bank, "question": "CAUSE",
+                              "frame_sha256": q["sha256"], "ordering": "chat",
+                              "system": q["system"], "answers": q["answers"],
+                              "answer_prefix": "", "group": "duty_separate"}))
     return MemoryDataset(samples, name=f"duty_{frame}")
+
+
+def select_cells(dataset, cells):
+    """The samples of `dataset` whose ids are in `cells`, in the dataset's order. Every
+    requested id must be one the dataset renders (on this frame and bank), or the read is
+    refused: a mistyped or absent cell is never read as an empty selection."""
+    want = list(dict.fromkeys(cells))
+    have = {s.id for s in dataset}
+    missing = [c for c in want if c not in have]
+    if missing:
+        raise ValueError(f"{len(missing)} requested cell(s) are not in {dataset.name}: "
+                         f"{missing[:5]}")
+    keep = set(want)
+    return MemoryDataset([s for s in dataset if s.id in keep], name=dataset.name)
+
+
+def load_cells(arg):
+    """Cell ids from -T cells=: a comma-separated list of sample ids, or the path of a
+    JSON file holding a list of ids (or an object with a `cells` list)."""
+    if isinstance(arg, (list, tuple)):
+        return [str(c) for c in arg]
+    if isinstance(arg, str) and arg.endswith(".json"):
+        with open(arg, encoding="utf-8") as fh:
+            data = json.load(fh)
+        cells = data["cells"] if isinstance(data, dict) else data
+        if not isinstance(cells, list) or not cells:
+            raise ValueError(f"{arg}: no list of cell ids")
+        return [str(c) for c in cells]
+    return [c.strip() for c in str(arg).split(",") if c.strip()]

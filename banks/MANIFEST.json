@@ -7,7 +7,8 @@
   "duty_pairs.json": "c3cf895ccf1bfa6baad39350433ec323715ffbc0c8693ebbc9b2e169afda5522",
   "duty_texts.jsonl": "b2081841ad5a0189f6330f05e0864f521bd295d9c9caf57ef79672942ec41bb5",
   "duty_questions.json": "7090b29479617ba87edd9b25beb016f40259e8ec1049c38dc5f4f9b8b4799b9f",
-  "duty_texts_v1_1.jsonl": "b088bdc702a3f81e081174c7f7f79b6f6f88a7b89d8a143410d3d3ca33a341e6"
+  "duty_texts_v1_1.jsonl": "86a3af3cddaab9d329530720e08923ab0b21c33d50f5bc489632eae5fd134a83",
+  "duty_questions_v1_1.json": "3c8f6c45ca9520442972b903fa17ed5b6af4701bb22b475fba2113242cfc24c8"
  },
  "versions": {
   "1.0": {
@@ -29,14 +30,15 @@
     "duty_pairs.json",
     "duty_texts.jsonl",
     "duty_questions.json",
-    "duty_texts_v1_1.jsonl"
+    "duty_texts_v1_1.jsonl",
+    "duty_questions_v1_1.json"
    ],
-   "n_duty_texts": 74,
-   "adds": "for the prawns pair: three neutral sentences on both legs (6 texts) and a full-text joint prompt in both orders (2 texts)"
+   "n_duty_texts": 76,
+   "adds": "for the prawns pair: three neutral sentences on both legs (6 texts), a full-text joint prompt in both orders (2), a reference case on both legs (2), and a duty CAUSE question (duty_questions_v1_1.json)"
   }
  },
  "n_excuse_cases": 62,
- "n_duty_texts": 74,
+ "n_duty_texts": 76,
  "scenarios": [
   "bicycle",
   "cheque",

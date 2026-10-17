@@ -19,9 +19,9 @@ reports the headline figures below for that model.
   person make the same omission (prawns: chef and home cook; electrical work; gas
   safety; childcare; driving; hair dye). Each pair is read side by side in both orders,
   each case alone, each case alone with the convention stated (a professional owes a
-  stricter duty), and each case alone with each of three neutral sentences. The prawns
-  pair's neutral sentences, and a second prawns side-by-side prompt that sets out the two
-  cases in full, were added in bank v1.1 (see Bank versions).
+  stricter duty), and each case alone with each of three neutral sentences. Bank v1.1
+  adds, for the prawns pair, its neutral sentences, a side-by-side prompt that sets out
+  the two cases in full, a reference case, and a CAUSE question (see Bank versions).
 
 The headline quantities:
 
@@ -155,14 +155,22 @@ stops at the first call and says so. A call that fails for any other reason leav
 cell unread, and the report lists the unread cells with their reasons.
 
 Task options: `-T scenarios=bicycle,ladder`, `-T questions=BLAME,REASONABLE`,
-`-T pairs=prawns,1`, `-T draws=N` (API models only; overrides the model table).
+`-T roles=P0,P1` (excuse test; SUPPLIER, on the two food scenarios, is read when named or
+with `-T roles=all`), `-T pairs=prawns,1`, `-T draws=N` (API models only; overrides the
+model table).
+
+**Single cells.** `-T cells=` (both tests) reads exactly the named cells: a comma-separated
+list of sample ids, such as `bicycle|C|REASONABLE|chat` or `prawns|pro|neutral_1|chat`, or
+the path of a JSON file holding a list of them (or an object with a `cells` list). A cell
+the selection does not render (a mistyped id, a question a role is not asked, a chat cell
+on the worksheet frame) is refused, with nothing sent.
 
 On the duty test, `-T conditions=` narrows the read to some conditions, each a kind
-(`separate`, `comparison`, `stated`, `neutral`), a group (`joint`: the side-by-side
-prompt in both orders; `joint_full`: prawns' full-text side-by-side prompt in both
-orders) or a single condition (`bare`, `cmp_pro_first`, `cmp_priv_first`,
+(`separate`, `comparison`, `stated`, `neutral`, `comparand`, `cause`), a group (`joint`:
+the side-by-side prompt in both orders; `joint_full`: prawns' full-text side-by-side
+prompt in both orders) or a single condition (`bare`, `cmp_pro_first`, `cmp_priv_first`,
 `cmp_full_pro_first`, `cmp_full_priv_first`, `stated`, `neutral_1`, `neutral_2`,
-`neutral_3`), and
+`neutral_3`, `comparand`), and
 `-T bank=1.0` reads the v1.0 bank (the default is the latest, 1.1). An unknown pair or
 condition, or a selection with no samples, is refused. For example, the prawns pair's
 neutral sentences alone:
@@ -247,7 +255,7 @@ made of. A version never edits an earlier version's files; it adds files of its 
 | version | duty texts | what it adds |
 |---|---|---|
 | 1.0 | 66 | the six pairs: side by side, separate, convention stated; three neutral sentences on pairs 1, 3, 4, 5 and 7 |
-| 1.1 | 74 | for the prawns pair: three neutral sentences, on both legs, and a full-text side-by-side prompt in both orders (`banks/duty_texts_v1_1.jsonl`) |
+| 1.1 | 76 | for the prawns pair: three neutral sentences on both legs, a full-text side-by-side prompt in both orders and a reference case on both legs (`banks/duty_texts_v1_1.jsonl`), and a duty CAUSE question (`banks/duty_questions_v1_1.json`) |
 
 `-T bank=1.0` renders every prompt byte for byte as before v1.1 existed; the test suite
 holds the digests of every v1.0 prompt, recorded before v1.1 was made, and checks it.
@@ -261,9 +269,16 @@ model on every pair.
 The prawns pair's v1.0 side-by-side prompt summarises the two cases; the other pairs'
 set them out in full. v1.1 adds a prawns side-by-side prompt built the way the others
 are (the two separate cases, each with its subject written as the other pairs' prompts
-write it, under the labels CHEF and HOME_COOK). It is read beside the v1.0 prompt and
-reported in its own view, `duty_stated_gap_full`; the stated gap, the share and every
-class stay on the v1.0 prompt. See `CHANGELOG.md`.
+write it, under the labels CHEF and HOME_COOK). Where a model has read it, the stated
+gap (and so the share and every class) comes from it; the v1.0 prompt's reading is kept
+beside it in `duty_stated_gap_summary`, and the two are never averaged together
+(`duty_stated_gap.stated_prompt` says which was used).
+
+The reference case (`comparand`) sets a case with another subject before the case to
+rate, as the study's reference cases for the other pairs did, and asks BLAME of the case
+to rate. The CAUSE question ("How much did Alaric cause the illness…") is one question
+for both legs: its harm noun occurs in neither leg's case. Both are read on the chat
+frame, and neither enters the separate gap. See `CHANGELOG.md`.
 
 ## What the instrument enforces
 
