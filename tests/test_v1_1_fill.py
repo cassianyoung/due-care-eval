@@ -155,6 +155,43 @@ if con is not None:
     T.check("the two reference-case texts are in the database, from the v1.1 file",
             nt == (2, "banks/duty_texts_v1_1.jsonl"), nt)
 
+# a void full-text prompt leaves prawns' stated gap MISSING, never the summary's
+def cmp_cell(cond, pro, priv, **kw):
+    c = duty_cell("prawns", None, cond, None, "CMPN")
+    g = None if pro is None else pro - priv
+    c.update({"leg": None, "score_pro": pro, "score_priv": priv, "gap": g,
+              "draw_gaps": [] if g is None else [g] * 10})
+    c.update(kw)
+    return c
+
+
+base = [duty_cell("prawns", "pro", "bare", 6.0), duty_cell("prawns", "priv", "bare", 5.0),
+        cmp_cell("cmp_pro_first", 7.0, 4.0), cmp_cell("cmp_priv_first", 6.0, 4.0)]
+void_full = [cmp_cell(c, None, None, why_none="no draw parsed", gap=None)
+             for c in ("cmp_full_pro_first", "cmp_full_priv_first")]
+for label, extra, want in (
+        ("no full-text cell", [], [(2.5, "summary")]),
+        ("void full-text cells", void_full, [])):
+    con = T.opens(f"a build with the summary read and {label} opens", B.build,
+                  base + extra,
+                  entry_of=lambda mid: {"kind": "api", "config_set": "off", "wire": {}})
+    if con is None:
+        continue
+    got = con.execute("SELECT stated_gap, stated_prompt FROM duty_stated_gap WHERE "
+                      "pair_id='prawns'").fetchall()
+    T.check(f"{label}: the stated gap is {want or 'MISSING, not the summary'}",
+            got == want, got)
+    keep = con.execute("SELECT stated_gap FROM duty_stated_gap_summary WHERE "
+                       "pair_id='prawns'").fetchall()
+    T.check(f"{label}: the summary reading is still in its own view (2.5)",
+            keep == [(2.5,)], keep)
+    if extra:
+        why = con.execute("SELECT share, status, missing_reason FROM duty_overview WHERE "
+                          "pair_id='prawns'").fetchone()
+        T.check("void full-text cells: no share, and the reason is the full-text read's",
+                why is not None and why[0] is None and "no draw parsed" in (why[2] or ""),
+                why)
+
 # ── 4. THE EXCUSE TEST: ROLES, SUPPLIER AND CELLS ──────────────────────────────────────
 T.check("by default the excuse test reads the ten roles (216 chat samples, no SUPPLIER)",
         len(excuse_task().dataset) == 216

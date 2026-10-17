@@ -1,6 +1,12 @@
 # Changelog
 
-## v1.1: the completeness fill
+## v1.1
+
+Release candidate `v1.1-rc1`, 2026-10-17, compared against tag `v1.0`. Two parts: the
+completeness fill (this section) and the prawns neutral sentences and full-text joint
+prompt (the next).
+
+### The completeness fill
 
 Bank and task changes under AMENDMENT_V1_1_COMPLETENESS (2026-10-17), on top of the prawns
 neutral sentences and full-text joint prompt described in the next section.
@@ -14,10 +20,12 @@ neutral sentences and full-text joint prompt described in the next section.
   {agent} cause the illness, on a scale from 0 to 9, where 0 means not at all and 9 means
   entirely? Answer with a single digit." One question for both legs; its harm noun occurs
   in neither leg's case. Asked of the separate cases; chat frame only.
-- **The stated gap uses the full-text prompt where read.** `duty_stated_gap` takes the
-  full-text side-by-side prompt's two orders where a model has read them and the v1.0
-  prompt's otherwise, never both (`stated_prompt` records which); the v1.0 prompt's
-  reading is in `duty_stated_gap_summary`. On v1.0 data nothing changes.
+- **The stated gap uses the full-text prompt where it exists.** Where a model has
+  full-text side-by-side cells for a pair, `duty_stated_gap` is their two-order mean, or
+  missing with the reason if they did not read; it never falls back to the v1.0 prompt,
+  so a pooled figure never mixes the two definitions across models. Elsewhere it is the
+  v1.0 prompt's. `stated_prompt` records which; the v1.0 prompt's reading is always in
+  `duty_stated_gap_summary`. On v1.0 data nothing changes.
 - **The excuse test reads SUPPLIER and single roles:** `-T roles=` (SUPPLIER when named,
   or `-T roles=all`).
 - **Single cells, both tests:** `-T cells=` takes sample ids or a JSON file of them, and
@@ -30,9 +38,7 @@ neutral sentences and full-text joint prompt described in the next section.
   the empty-selection guard, and a check that the stated gap has one row per model and
   pair.
 
-## v1.1: prawns neutral sentences and a full-text prawns joint prompt
-
-Release candidate `v1.1-rc1`, 2026-10-17.
+### Prawns neutral sentences and a full-text prawns joint prompt
 
 **Banks.** The prawns pair was built before the duty test had neutral sentences, so in
 v1.0 it has none: it has no neutral baseline, it contributes no deviations to a model's
@@ -103,4 +109,6 @@ cells (270 under v1.0).
 
 ## v1.0
 
-The excuse test and the duty test as published with the paper (commit `ba96e18`).
+The excuse test and the duty test as published with the paper: tag `v1.0`, commit
+`ba96e18`. `tests/fixtures/v1_0_prompt_sha256.json` holds the digest of every prompt it
+renders (1,386), and `-T bank=1.0` in v1.1 renders them byte for byte.

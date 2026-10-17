@@ -257,8 +257,9 @@ made of. A version never edits an earlier version's files; it adds files of its 
 | 1.0 | 66 | the six pairs: side by side, separate, convention stated; three neutral sentences on pairs 1, 3, 4, 5 and 7 |
 | 1.1 | 76 | for the prawns pair: three neutral sentences on both legs, a full-text side-by-side prompt in both orders and a reference case on both legs (`banks/duty_texts_v1_1.jsonl`), and a duty CAUSE question (`banks/duty_questions_v1_1.json`) |
 
-`-T bank=1.0` renders every prompt byte for byte as before v1.1 existed; the test suite
-holds the digests of every v1.0 prompt, recorded before v1.1 was made, and checks it.
+`-T bank=1.0` renders every prompt byte for byte as release `v1.0` did; the test suite
+holds the digests of every v1.0 prompt, recorded at tag `v1.0` before v1.1 was made, and
+checks it.
 Each duty cell records the bank version it was read under, and `db.build_from_readings`
 loads the texts of the latest version its cells were read under, so a database built
 from v1.0 readings is the database it always was. In a v1.1 build the prawns pair's
@@ -269,9 +270,11 @@ model on every pair.
 The prawns pair's v1.0 side-by-side prompt summarises the two cases; the other pairs'
 set them out in full. v1.1 adds a prawns side-by-side prompt built the way the others
 are (the two separate cases, each with its subject written as the other pairs' prompts
-write it, under the labels CHEF and HOME_COOK). Where a model has read it, the stated
-gap (and so the share and every class) comes from it; the v1.0 prompt's reading is kept
-beside it in `duty_stated_gap_summary`, and the two are never averaged together
+write it, under the labels CHEF and HOME_COOK). Where a model has full-text cells, the
+stated gap (and so the share and every class) comes from them, and is missing, with the
+reason, if they did not read: it never falls back to the v1.0 prompt, so a pooled figure
+never mixes the two prompts across models. The v1.0 prompt's reading is kept beside it
+in `duty_stated_gap_summary`, and the two are never averaged together
 (`duty_stated_gap.stated_prompt` says which was used).
 
 The reference case (`comparand`) sets a case with another subject before the case to

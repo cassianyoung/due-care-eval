@@ -1399,6 +1399,6 @@
 "scaffolding|P2|BLAME|ordering_5": "cfc1bd94c3837c068b07e792412c9b8f62f4081fb9a20b8374bf561e59614aec"
 }
 },
-"rendered_at": "ba96e18",
-"what": "sha256 over json.dumps([system, input]) of every prompt the eval rendered at ba96e18, before bank v1.1 existed, keyed by dataset and sample id. A run under -T bank=1.0 must render exactly these, byte for byte. Recorded before any v1.1 change was made."
+"rendered_at": "v1.0 (tag v1.0, commit ba96e18)",
+"what": "sha256 over json.dumps([system, input]) of every prompt the eval rendered at tag v1.0 (commit ba96e18), before bank v1.1 existed, keyed by dataset and sample id. A run under -T bank=1.0 must render exactly these, byte for byte. Recorded before any v1.1 change was made."
 }

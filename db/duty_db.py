@@ -212,9 +212,12 @@ VIEWS = {
  # ── 1. THE STATED GAP, PER ORDER AND AS THE TWO-ORDER MEAN ────────────────────
  # Two side-by-side prompts can exist for a pair: the v1.0 one (cmp_pro_first,
  # cmp_priv_first) and, for prawns from bank v1.1, one that sets out the two separate
- # cases in full (cmp_full_*). Each has its own view. The stated gap takes the full-text
- # prompt's two orders where that arm has read them, and the v1.0 prompt's otherwise;
- # the two are never averaged together. On v1.0 data it is the v1.0 prompt throughout.
+ # cases in full (cmp_full_*). Each has its own view. Where an arm has full-text cells
+ # for a pair, read or not, its stated gap is the full-text prompt's or it is MISSING:
+ # it never falls back to the v1.0 prompt, because a pooled figure would then mix two
+ # definitions across arms (Cassian, 2026-10-17). Where an arm has no full-text cell
+ # for the pair (every pair but prawns, and all v1.0 data), it is the v1.0 prompt's.
+ # The two are never averaged together.
  "duty_stated_gap_summary": """
     CREATE VIEW duty_stated_gap_summary AS
         SELECT run, arm, pair_id, pair_name,
@@ -262,8 +265,11 @@ VIEWS = {
         SELECT f.*, 'full_text' AS stated_prompt FROM duty_stated_gap_full f
         UNION ALL
         SELECT s.*, 'summary' AS stated_prompt FROM duty_stated_gap_summary s
-         WHERE NOT EXISTS (SELECT 1 FROM duty_stated_gap_full f
-                            WHERE f.arm = s.arm AND f.pair_id = s.pair_id)
+         WHERE NOT EXISTS (SELECT 1 FROM duty_cells c
+                            WHERE c.arm = s.arm AND c.pair_id = s.pair_id
+                              AND c.question = 'CMPN'
+                              AND c.condition IN ('cmp_full_pro_first',
+                                                  'cmp_full_priv_first'))
  """,
  # ── 2. THE SEPARATE GAP, AND THE HEADROOM THAT BOUNDS IT ──────────────────────
  "duty_separate_gap": """
@@ -884,8 +890,7 @@ VIEWS = {
                    COALESCE((SELECT 'comparison unread: ' || MIN(u.unread_reason)
                                FROM duty_cells u
                               WHERE u.arm = m.arm AND u.pair_id = p.pair_id
-                                AND u.question = 'CMPN' AND u.status = 'unread'
-                                AND u.condition IN ('cmp_pro_first', 'cmp_priv_first')),
+                                AND u.question = 'CMPN' AND u.status = 'unread'),
                             'no comparison cell exists for this arm and pair')
                  END || ' ', '')
                  || COALESCE(
