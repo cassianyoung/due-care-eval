@@ -241,6 +241,15 @@ instruction.
 | reasoning | API models read with reasoning on | as sampled, over the draws that reasoned (reasoning text returned or reasoning tokens billed) |
 | teacher-forced | local weights | the expected digit, or P(yes), under the full answer distribution |
 
+**A log-probability readout needs a provider that returns log-probabilities.** If the
+provider stops returning them, every draw comes back with its answer text but an empty
+top-k, and the cell is void with "no digit token in any returned top-k" (or "no yes or no
+in any returned top-k"). That is the provider, not the eval. From 17 October 2026, Sail
+Research, the pinned provider for `deepseek` (`deepseek/deepseek-v4.1-flash`) and `kimi`
+(`moonshotai/kimi-k3`), returns none. Those two entries cannot be re-read on their
+log-probability readout, and switching them to a sampled readout would put a different
+readout in a row of log-probability readings, so a re-read records their cells as unread.
+
 Draws per cell come from the model entry (10 by default, 20 for a reasoning readout). A
 cell that loses more than 10% of its draws to voids, truncation included, is reported
 with its void count and is not used. A cell with no reading is a row with a reason, never
