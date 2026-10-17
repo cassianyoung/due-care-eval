@@ -169,9 +169,20 @@ base = [duty_cell("prawns", "pro", "bare", 6.0), duty_cell("prawns", "priv", "ba
         cmp_cell("cmp_pro_first", 7.0, 4.0), cmp_cell("cmp_priv_first", 6.0, 4.0)]
 void_full = [cmp_cell(c, None, None, why_none="no draw parsed", gap=None)
              for c in ("cmp_full_pro_first", "cmp_full_priv_first")]
+one_order = [cmp_cell("cmp_full_pro_first", 8.0, 5.0),
+             cmp_cell("cmp_full_priv_first", None, None, why_none="no draw parsed",
+                      gap=None)]
+both_full = [cmp_cell("cmp_full_pro_first", 8.0, 5.0),
+             cmp_cell("cmp_full_priv_first", 9.0, 5.0)]
+# THE GATE OPENS: both orders of the full text read give its two-order mean (3.5). THE
+# GATE REFUSES: on a v1.1 bank, where prawns has a full-text prompt, an arm with no
+# full-text cell, void ones, or one order read has NO stated gap, never the summary's
+# (Cassian, 2026-10-17). Plus the v1.0 case below, where the summary is the definition.
 for label, extra, want in (
-        ("no full-text cell", [], [(2.5, "summary")]),
-        ("void full-text cells", void_full, [])):
+        ("both full-text orders", both_full, [(3.5, "full_text")]),
+        ("no full-text cell", [], []),
+        ("void full-text cells", void_full, []),
+        ("one full-text order read", one_order, [(None, "full_text")])):
     con = T.opens(f"a build with the summary read and {label} opens", B.build,
                   base + extra,
                   entry_of=lambda mid: {"kind": "api", "config_set": "off", "wire": {}})
@@ -185,12 +196,23 @@ for label, extra, want in (
                        "pair_id='prawns'").fetchall()
     T.check(f"{label}: the summary reading is still in its own view (2.5)",
             keep == [(2.5,)], keep)
-    if extra:
+    if extra is void_full:
         why = con.execute("SELECT share, status, missing_reason FROM duty_overview WHERE "
                           "pair_id='prawns'").fetchone()
         T.check("void full-text cells: no share, and the reason is the full-text read's",
                 why is not None and why[0] is None and "no draw parsed" in (why[2] or ""),
                 why)
+
+# a build from v1.0 readings holds only the v1.0 texts, where the summary IS prawns'
+# side-by-side prompt, so its stated gap is the summary's
+base10 = [dict(c, bank_version="1.0") for c in base]
+con = T.opens("a build from v1.0 readings opens", B.build, base10,
+              entry_of=lambda mid: {"kind": "api", "config_set": "off", "wire": {}})
+if con is not None:
+    got = con.execute("SELECT stated_gap, stated_prompt FROM duty_stated_gap WHERE "
+                      "pair_id='prawns'").fetchall()
+    T.check("v1.0 readings: the stated gap is the summary's (2.5), the only prompt v1.0 has",
+            got == [(2.5, "summary")], got)
 
 # ── 4. THE EXCUSE TEST: ROLES, SUPPLIER AND CELLS ──────────────────────────────────────
 T.check("by default the excuse test reads the ten roles (216 chat samples, no SUPPLIER)",
@@ -284,5 +306,19 @@ T.check("and the withdrawn 8-token wire is kept only as a withdrawn setting in t
 T.check("a bicycle cell on gemini_r is sent on that wire",
         API.payload_for(bw["wire"], [])["max_tokens"] == 2048
         and API.payload_for(bw["wire"], [])["reasoning"] == {"effort": "low"})
+
+# ── THE REASONING CONFIGURATION, BY WHAT THE MODEL DID (Cassian, 2026-10-17) ────────────
+from due_care.scorers import configured
+vd = {"readout": "sampled", "wire": {"reasoning": "vendor_default"}}
+T.check("a vendor-default wire whose every draw reasoned is configured on (Gemini 3.1 Pro)",
+        configured(vd, {"n_draws": 10, "n_reasoning": 10}, False) == "on")
+T.check("the same wire with a draw that did not reason stays off",
+        configured(vd, {"n_draws": 10, "n_reasoning": 9}, False) == "off")
+T.check("a reasoning-off wire whose draws reasoned stays off (flagged, never reclassed)",
+        configured({"readout": "sampled", "wire": {"reasoning": {"enabled": False}}},
+                   {"n_draws": 10, "n_reasoning": 10}, False) == "off")
+T.check("a log-prob cell is logprob, a reasoning readout on",
+        configured({"readout": "logprob", "wire": {}}, {}, False) == "logprob"
+        and configured({"readout": "reasoning", "wire": {}}, {}, True) == "on")
 
 T.done()

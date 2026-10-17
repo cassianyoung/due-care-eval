@@ -58,9 +58,27 @@ def _cell(state):
         c, key = RO.sampled_digit(recs, reasoning_arm), "ev"
     c.update({"wire_sha": r.get("wire_sha"), "draws_asked": r.get("draws"),
               "channel_group": r.get("group"),
-              "reasoning_configured": ("logprob" if r["readout"] == "logprob" else
-                                       "on" if reasoning_arm else "off")})
+              "reasoning_configured": configured(r, c, reasoning_arm)})
     return c, key
+
+
+def configured(r, c, reasoning_arm):
+    """The cell's reasoning configuration: logprob, on or off.
+
+    By what the model did as well as what the wire asked (Cassian, 2026-10-17): a wire
+    that leaves reasoning at the vendor's default on a model that cannot be read without
+    it (Gemini 3.1 Pro) is `on` where every draw of the cell reasoned, so the model sits in
+    the reasoning group everywhere. The reading is unchanged by this: when every draw
+    reasoned, all draws and reasoning draws are the same draws."""
+    if r["readout"] == "logprob":
+        return "logprob"
+    if reasoning_arm:
+        return "on"
+    n = c.get("n_draws")
+    if ((r.get("wire") or {}).get("reasoning") == "vendor_default" and n
+            and c.get("n_reasoning") == n):
+        return "on"
+    return "off"
 
 
 def _score(state):

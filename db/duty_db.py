@@ -212,12 +212,15 @@ VIEWS = {
  # ── 1. THE STATED GAP, PER ORDER AND AS THE TWO-ORDER MEAN ────────────────────
  # Two side-by-side prompts can exist for a pair: the v1.0 one (cmp_pro_first,
  # cmp_priv_first) and, for prawns from bank v1.1, one that sets out the two separate
- # cases in full (cmp_full_*). Each has its own view. Where an arm has full-text cells
- # for a pair, read or not, its stated gap is the full-text prompt's or it is MISSING:
- # it never falls back to the v1.0 prompt, because a pooled figure would then mix two
- # definitions across arms (Cassian, 2026-10-17). Where an arm has no full-text cell
- # for the pair (every pair but prawns, and all v1.0 data), it is the v1.0 prompt's.
- # The two are never averaged together.
+ # cases in full (cmp_full_*). Each has its own view. Where the bank in this database
+ # defines a full-text prompt for a pair (prawns, from v1.1), every arm's stated gap
+ # for that pair is the full-text prompt's, read in BOTH orders, or it is MISSING: an
+ # arm with no full-text cell, a void one, or only one order read never falls back to
+ # the summary, because a pooled figure would then mix two definitions across arms
+ # (Cassian, 2026-10-17; ruled again for arms with no full-text cell at all). Where the
+ # bank defines no full-text prompt for the pair (every pair but prawns, and a build
+ # from v1.0 readings, which holds only the v1.0 texts), it is the v1.0 prompt's. The
+ # two are never averaged together.
  "duty_stated_gap_summary": """
     CREATE VIEW duty_stated_gap_summary AS
         SELECT run, arm, pair_id, pair_name,
@@ -246,14 +249,18 @@ VIEWS = {
                         THEN score_pro - score_priv END) AS gap_pro_first,
                MAX(CASE WHEN condition = 'cmp_full_priv_first'
                         THEN score_pro - score_priv END) AS gap_priv_first,
-               AVG(score_pro - score_priv) AS stated_gap,
-               MAX(score_pro - score_priv) - MIN(score_pro - score_priv)
+               -- both orders or no gap: a one-order mean is not the two-order quantity
+               CASE WHEN COUNT(*) = 2 THEN AVG(score_pro - score_priv) END AS stated_gap,
+               CASE WHEN COUNT(*) = 2 THEN MAX(score_pro - score_priv)
+                                           - MIN(score_pro - score_priv) END
                    AS order_spread,
                COUNT(*) AS n_orders,
                SUM(n_parsed) AS n_draws_parsed, SUM(n_draws) AS n_draws_asked,
-               CASE WHEN MIN(ABS(score_pro - score_priv)) = 0.0 THEN 1 ELSE 0 END
+               CASE WHEN COUNT(*) < 2 THEN NULL
+                    WHEN MIN(ABS(score_pro - score_priv)) = 0.0 THEN 1 ELSE 0 END
                    AS exact_zero_in_an_order,
-               CASE WHEN MAX(score_pro - score_priv) > 0
+               CASE WHEN COUNT(*) < 2 THEN NULL
+                    WHEN MAX(score_pro - score_priv) > 0
                      AND MIN(score_pro - score_priv) < 0 THEN 1 ELSE 0 END
                    AS sign_differs_across_orders
         FROM duty_reported WHERE question = 'CMPN'
@@ -265,11 +272,9 @@ VIEWS = {
         SELECT f.*, 'full_text' AS stated_prompt FROM duty_stated_gap_full f
         UNION ALL
         SELECT s.*, 'summary' AS stated_prompt FROM duty_stated_gap_summary s
-         WHERE NOT EXISTS (SELECT 1 FROM duty_cells c
-                            WHERE c.arm = s.arm AND c.pair_id = s.pair_id
-                              AND c.question = 'CMPN'
-                              AND c.condition IN ('cmp_full_pro_first',
-                                                  'cmp_full_priv_first'))
+         WHERE NOT EXISTS (SELECT 1 FROM duty_texts t
+                            WHERE t.pair_id = s.pair_id AND t.kind = 'comparison'
+                              AND t.variant LIKE 'full\\_%' ESCAPE '\\')
  """,
  # ── 2. THE SEPARATE GAP, AND THE HEADROOM THAT BOUNDS IT ──────────────────────
  "duty_separate_gap": """
