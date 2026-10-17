@@ -16,6 +16,24 @@ DUTY_PAIRS = ("prawns", "1", "3", "4", "5", "7")
 SEPARATE_ALARIC = "Alaric"
 
 
+class PromptCheckRefused(F.BankError):
+    """A prompt the read would send is not in the pre-flight file; nothing was sent."""
+
+
+def preflight(dataset, path):
+    """Refuse the read, before any call, unless every prompt it would send hashes to a
+    digest in `path` (see harness.frames.prompt_sha16 for the form hashed). Returns the
+    number of prompts checked."""
+    want = F.load_prompt_check(path)
+    missing = [s.id for s in dataset
+               if F.prompt_sha16(s.metadata.get("system"), s.input) not in want]
+    if missing:
+        raise PromptCheckRefused(
+            f"pre-flight: {len(missing)} of {len(dataset)} prompts are not in {path}, "
+            f"so nothing is sent: {missing[:5]}")
+    return len(dataset)
+
+
 def _cases():
     F.manifest_check()
     return F.load_jsonl("excuse_cases.jsonl")
@@ -63,34 +81,78 @@ def excuse_dataset(frame="chat", scenarios=SCENARIOS, questions=QUESTIONS,
     return MemoryDataset(samples, name=f"excuse_{frame}")
 
 
-def duty_dataset(frame="chat", pairs=DUTY_PAIRS, legs=("separate", "comparison",
-                                                       "stated", "neutral")):
+# The duty conditions a read can be narrowed to: a kind names every condition of that
+# kind, and a condition names itself.
+DUTY_KINDS = ("separate", "comparison", "stated", "neutral")
+DUTY_CONDITIONS = ("bare", "cmp_pro_first", "cmp_priv_first", "cmp_full_pro_first",
+                   "cmp_full_priv_first", "stated", "neutral_1", "neutral_2", "neutral_3")
+# names for groups of conditions: the banked joint prompt in both orders, and the
+# full-text joint prompt (bank v1.1, prawns) in both orders
+DUTY_CONDITION_GROUPS = {"joint": ("cmp_pro_first", "cmp_priv_first"),
+                         "joint_full": ("cmp_full_pro_first", "cmp_full_priv_first")}
+
+
+def _condition_of(t):
+    if t["kind"] == "comparison":
+        return f"cmp_{t['variant']}"
+    return {"separate": "bare", "stated": "stated"}.get(t["kind"], t["variant"])
+
+
+def _check_selection(name, wanted, known):
+    unknown = sorted(set(wanted) - set(known))
+    if unknown:
+        raise ValueError(f"unknown {name} {unknown}; one of {list(known)}")
+
+
+def duty_dataset(frame="chat", pairs=DUTY_PAIRS, legs=DUTY_KINDS, bank=F.BANK_LATEST,
+                 conditions=None):
     """Samples for the duty test.
 
     Separate, stated and neutral cells ask the BLAME question of one case (subject
     Alaric); comparison cells put both cases side by side in one of two orders and ask
     for both scores. The comparison needs two digits in one answer, so it is read on the
     chat frame only.
+
+    `bank` is the bank version ("1.0" or "1.1"); v1.1 adds the prawns pair's neutral
+    sentences and leaves every v1.0 text as it was. `conditions` narrows the read to some
+    conditions, each a kind (separate, comparison, stated, neutral), a group (joint: the
+    banked joint prompt in both orders; joint_full: the full-text joint prompt in both
+    orders) or a condition (bare, cmp_pro_first, cmp_priv_first, cmp_full_pro_first,
+    cmp_full_priv_first, stated, neutral_1, neutral_2, neutral_3). An unknown pair or
+    condition is refused rather than read as an empty selection.
     """
-    F.manifest_check()
+    texts = F.load_duty_texts(bank)
+    _check_selection("pairs", pairs, DUTY_PAIRS)
+    _check_selection("legs", legs, DUTY_KINDS)
+    if conditions is not None:
+        _check_selection("conditions", conditions,
+                         DUTY_KINDS + DUTY_CONDITIONS + tuple(DUTY_CONDITION_GROUPS))
+        conditions = tuple(conditions) + tuple(
+            c for g in conditions for c in DUTY_CONDITION_GROUPS.get(g, ()))
     qs = F.load_json("excuse_questions.json")
     dq = F.load_json("duty_questions.json")
     ws = F.load_json("worksheet.json")
-    texts = F.load_jsonl("duty_texts.jsonl")
     samples = []
     for t in texts:
         if t["pair"] not in pairs or t["kind"] not in legs:
             continue
-        cond = {"separate": "bare", "stated": "stated"}.get(t["kind"], t["variant"])
+        cond = _condition_of(t)
+        if conditions is not None and t["kind"] not in conditions \
+                and cond not in conditions:
+            continue
         meta = {"test": "duty", "pair": t["pair"], "leg": t["leg"], "kind": t["kind"],
-                "condition": cond, "text_sha256": t["sha256"], "frame": frame}
+                "condition": cond, "text_sha256": t["sha256"], "frame": frame,
+                "bank_version": bank}
         if t["kind"] == "comparison":
             if frame != "chat":
                 continue
             samples.append(Sample(
                 id=f"{t['pair']}|cmp|{t['variant']}", input=t["text"],
                 metadata={**meta, "condition": f"cmp_{t['variant']}", "question": "CMPN",
-                          "order": t["variant"], "label_first": t["label_first"],
+                          # the full-text prompt's variants are full_pro_first and
+                          # full_priv_first; the order is what follows the prefix
+                          "order": t["variant"].removeprefix("full_"),
+                          "label_first": t["label_first"],
                           "label_second": t["label_second"],
                           "system": dq["comparison"]["system"],
                           "group": "duty_comparison"}))

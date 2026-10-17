@@ -7,6 +7,7 @@ It checks the plumbing, not the model: GPT-2 is not expected to pass the gate, a
 gate verdicts are printed rather than checked. Exits 1 if any check fails.
 """
 import glob
+import hashlib
 import json
 import os
 import sqlite3
@@ -28,6 +29,11 @@ T = Tally("dry_run_check")
 entry = MT.load("gpt2")
 fixture = set(json.load(open(os.path.join(ROOT, "tests", "fixtures",
                                           "worksheet_prompt_sha16.json")))["worksheet"])
+# the fixture holds the v1.0 worksheet prompts; bank v1.1 adds the prawns pair's neutral
+# sentences, whose worksheet prompts are rendered here from the banks
+_v10 = {s.id for s in duty_dataset("worksheet", bank="1.0")}
+fixture |= {hashlib.sha256(s.input.encode()).hexdigest()[:16]
+            for s in duty_dataset("worksheet") if s.id not in _v10}
 want = {"due_care/excuse": len(excuse_dataset("worksheet")),
         "due_care/duty": len(duty_dataset("worksheet"))}
 

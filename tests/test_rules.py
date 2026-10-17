@@ -22,7 +22,7 @@ for frame in ("chat", "worksheet"):
     for ds in (D.excuse_dataset(frame), D.duty_dataset(frame)):
         bad_subject, bad_text = [], []
         texts = {r["sha256"]: r["text"] for r in F.load_jsonl("excuse_cases.jsonl")}
-        texts.update({r["sha256"]: r["text"] for r in F.load_jsonl("duty_texts.jsonl")})
+        texts.update({r["sha256"]: r["text"] for r in F.load_duty_texts()})
         for s in ds:
             q = s.input
             if s.metadata.get("question") == "CMPN":

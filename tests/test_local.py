@@ -30,7 +30,9 @@ def sha16(s):
 
 
 # ── 1. THE WORKSHEET PROMPTS ─────────────────────────────────────────────────────
-got = {sha16(s.input) for ds in (excuse_dataset("worksheet"), duty_dataset("worksheet"))
+# the fixture holds the v1.0 prompts; tests/test_bank_v1_1.py covers what v1.1 adds
+got = {sha16(s.input) for ds in (excuse_dataset("worksheet"),
+                                 duty_dataset("worksheet", bank="1.0"))
        for s in ds}
 T.check(f"every rendered worksheet prompt is in the fixture ({len(got)} prompts)",
         got <= WANT, sorted(got - WANT)[:4])

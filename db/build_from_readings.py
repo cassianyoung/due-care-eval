@@ -99,9 +99,13 @@ def _excuse(con, c, aid):
              c.get("answer_mass"), _void(c, key)))
 
 
-def _duty_static(con, texts_seen):
+def _duty_static(con, texts_seen, version=F.BANK_LATEST):
+    """The duty pairs and the texts of one bank version. A build loads the texts of the
+    latest version its cells were read under, so a build from v1.0 readings holds
+    exactly the v1.0 texts and its views read as they always did (the views decide
+    whether a pair has neutral sentences from the texts present)."""
     pairs = F.load_json("duty_pairs.json")
-    man = F.manifest_check()["files"]
+    man = F.manifest_check(version)["files"]
     for pid, p in pairs.items():
         con.execute(
             "INSERT OR IGNORE INTO duty_pairs(pair_id, name, status, pro_label, "
@@ -110,15 +114,33 @@ def _duty_static(con, texts_seen):
             (pid, p["name"], p["pro_label"], p["priv_label"],
              int(p["victim_chose_arrangement"]), "banks/duty_texts.jsonl",
              man["duty_texts.jsonl"]))
-    for t in F.load_jsonl("duty_texts.jsonl"):
+    for t in F.load_duty_texts(version):
         tid = f"{t['pair']}|{t['leg']}|{t['kind']}|{t['variant']}"
         kind = {"stated": "convention"}.get(t["kind"], t["kind"])
         con.execute(
             "INSERT OR IGNORE INTO duty_texts(text_id, pair_id, leg, kind, variant, text, "
             "sha256, word_count, bank, bank_sha) VALUES (?,?,?,?,?,?,?,?,?,?)",
             (tid, t["pair"], t["leg"], kind, t["variant"], t["text"], t["sha256"],
-             len(t["text"].split()), "banks/duty_texts.jsonl", man["duty_texts.jsonl"]))
+             len(t["text"].split()), f"banks/{t['bank_file']}", man[t["bank_file"]]))
         texts_seen[t["sha256"]] = tid
+
+
+def _bank_version(cells):
+    """The latest bank version any duty cell was read under; a cell from before
+    versions were recorded is v1.0."""
+    seen = {str(c.get("bank_version") or "1.0") for c in cells if c.get("test") == "duty"}
+    for v in seen:
+        F.check_version(v)
+    return max(seen, key=F.BANK_VERSIONS.index) if seen else F.BANK_LATEST
+
+
+def _text_bank_file(c):
+    """The bank file the cell's text came from (the v1.1 additions are in their own)."""
+    v = str(c.get("bank_version") or "1.0")
+    for name in F.DUTY_TEXT_FILES[F.check_version(v)]:
+        if any(r["sha256"] == c.get("text_sha256") for r in F.load_jsonl(name)):
+            return name
+    return "duty_texts.jsonl"
 
 
 def _duty(con, c, texts_seen, entry_of):
@@ -155,7 +177,7 @@ def _duty(con, c, texts_seen, entry_of):
          providers[0] if providers else ("local" if c.get("model_kind") == "local"
                                          else "unrecorded"),
          ",".join(providers) or None, c["model_id"], wire,
-         f"inspect:{c['model_id']}", "", "banks/duty_texts.jsonl",
+         f"inspect:{c['model_id']}", "", f"banks/{_text_bank_file(c)}",
          "unread" if reason else "read", reason))
     vals = c.get("draw_gaps") if q == "CMPN" else c.get("draw_evs")
     for i, v in enumerate(vals or []):
@@ -216,7 +238,7 @@ def build(cells, out=":memory:", entry_of=None):
     schema.create(con)
     cache, texts_seen = {}, {}
     if any(c.get("test") == "duty" for c in cells):
-        _duty_static(con, texts_seen)
+        _duty_static(con, texts_seen, _bank_version(cells))
     for c in _duty_cells(cells):
         _duty(con, c, texts_seen, entry_of)
     for c in cells:

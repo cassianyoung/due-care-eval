@@ -44,11 +44,26 @@ def load_jsonl(name):
         return [_checked(json.loads(l)) for l in fh if l.strip()]
 
 
-def manifest_check():
-    """Every bank file hashes to the value MANIFEST.json records for it."""
+BANK_VERSIONS = ("1.0", "1.1")
+BANK_LATEST = "1.1"
+# what each bank version adds to the duty texts of the one before; v1.0's
+# duty_texts.jsonl is frozen and never edited, so a v1.0 run renders what it always did
+DUTY_TEXT_FILES = {"1.0": ("duty_texts.jsonl",),
+                   "1.1": ("duty_texts.jsonl", "duty_texts_v1_1.jsonl")}
+
+
+def check_version(version):
+    if version not in BANK_VERSIONS:
+        raise BankError(f"unknown bank version {version!r}; one of {BANK_VERSIONS}")
+    return version
+
+
+def manifest_check(version=BANK_LATEST):
+    """Every bank file of `version` hashes to the value MANIFEST.json records for it."""
     man = load_json("MANIFEST.json")
+    names = man["versions"][check_version(version)]["files"]
     bad = []
-    for name, want in man["files"].items():
+    for name, want in ((n, man["files"][n]) for n in names):
         with open(os.path.join(BANKS, name), "rb") as fh:
             got = hashlib.sha256(fh.read()).hexdigest()
         if got != want:
@@ -56,6 +71,41 @@ def manifest_check():
     if bad:
         raise BankError(f"bank files differ from MANIFEST.json: {bad}")
     return man
+
+
+def load_duty_texts(version=BANK_LATEST):
+    """The duty texts of a bank version, each with the bank file it came from, every
+    text checked against its sha256."""
+    manifest_check(version)
+    rows = []
+    for name in DUTY_TEXT_FILES[version]:
+        rows += [{**r, "bank_file": name} for r in load_jsonl(name)]
+    return rows
+
+
+def prompt_sha16(system, user):
+    """16-hex sha256 of a prompt, in the form the study hashed it: the chat messages as
+    sent to an API (json.dumps of the system and user turns), or the bare text where
+    there is no system turn (the worksheet)."""
+    if system is None:
+        body = user
+    else:
+        body = json.dumps([{"role": "system", "content": system},
+                           {"role": "user", "content": user}])
+    return sha256(body)[:16]
+
+
+def load_prompt_check(path):
+    """The set of 16-hex prompt digests in a pre-flight file: a JSON list, or an object
+    whose list values are digests (non-list values, such as a `what` note, are
+    ignored)."""
+    with open(path, encoding="utf-8") as fh:
+        data = json.load(fh)
+    vals = data if isinstance(data, list) else [
+        x for v in data.values() if isinstance(v, list) for x in v]
+    if not vals or not all(isinstance(x, str) and len(x) == 16 for x in vals):
+        raise BankError(f"{path}: not a list of 16-hex prompt digests")
+    return set(vals)
 
 
 def subject_of(text):

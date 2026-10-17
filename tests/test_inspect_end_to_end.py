@@ -88,8 +88,21 @@ with tempfile.TemporaryDirectory() as d:
     n_cells = con.execute("SELECT COUNT(*) FROM cells c JOIN artefacts a ON a.id = "
                           "c.artefact_id WHERE a.path NOT LIKE '%:duty'").fetchone()[0]
     n_duty = con.execute("SELECT COUNT(*) FROM duty_cells").fetchone()[0]
+    # prawns and pair 1: 6 + 12 cells under bank v1.0, plus prawns' 6 neutral cells and
+    # 2 full-text joint cells in v1.1
     T.check(f"the database is built from the logs alone ({n_cells} excuse, {n_duty} duty "
-            f"cells)", n_cells == 36 and n_duty == 18)
+            f"cells)", n_cells == 36 and n_duty == 26)
+    n_pn = con.execute("SELECT COUNT(*) FROM duty_cells WHERE pair_id = 'prawns' AND "
+                       "condition LIKE 'neutral_%'").fetchone()[0]
+    T.check(f"the prawns neutral cells are among them ({n_pn} of 6)", n_pn == 6)
+    v10 = inspect_eval(duty(pairs="prawns,1", bank="1.0"), model="due_care/example_api",
+                       log_dir=os.path.join(d, "v10"), display="none")
+    con10 = B.build(B.cells_from_logs([v10[0].location]),
+                    os.path.join(d, "fresh_v10.sqlite"))
+    T.check("the same read under bank 1.0 builds the v1.0 18 duty cells, no prawns neutral "
+            "text", con10.execute("SELECT COUNT(*) FROM duty_cells").fetchone()[0] == 18
+            and con10.execute("SELECT COUNT(*) FROM duty_texts WHERE pair_id = 'prawns' "
+                              "AND kind = 'neutral'").fetchone()[0] == 0)
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         REP.main(paths)

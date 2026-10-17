@@ -228,6 +228,29 @@ VIEWS = {
                      AND MIN(score_pro - score_priv) < 0 THEN 1 ELSE 0 END
                    AS sign_differs_across_orders
         FROM duty_reported WHERE question = 'CMPN'
+          AND condition IN ('cmp_pro_first', 'cmp_priv_first')
+        GROUP BY run, arm, pair_id, pair_name
+ """,
+ # ── 1b. THE STATED GAP FROM THE FULL-TEXT JOINT PROMPT (bank v1.1, prawns) ─────
+ # The prawns pair's banked joint prompt is a summary of the two cases; v1.1 adds a
+ # second one built from the two separate cases in full, as the other pairs' are. It is
+ # a registered comparison and never enters duty_stated_gap: the stated gap, the share
+ # and every class stay on the banked joint prompt, and this view carries the full-text
+ # reading beside them.
+ "duty_stated_gap_full": """
+    CREATE VIEW duty_stated_gap_full AS
+        SELECT run, arm, pair_id, pair_name,
+               MAX(CASE WHEN condition = 'cmp_full_pro_first'
+                        THEN score_pro - score_priv END) AS gap_pro_first,
+               MAX(CASE WHEN condition = 'cmp_full_priv_first'
+                        THEN score_pro - score_priv END) AS gap_priv_first,
+               AVG(score_pro - score_priv) AS stated_gap,
+               MAX(score_pro - score_priv) - MIN(score_pro - score_priv)
+                   AS order_spread,
+               COUNT(*) AS n_orders,
+               SUM(n_parsed) AS n_draws_parsed, SUM(n_draws) AS n_draws_asked
+        FROM duty_reported WHERE question = 'CMPN'
+          AND condition IN ('cmp_full_pro_first', 'cmp_full_priv_first')
         GROUP BY run, arm, pair_id, pair_name
  """,
  # ── 2. THE SEPARATE GAP, AND THE HEADROOM THAT BOUNDS IT ──────────────────────
@@ -520,8 +543,8 @@ VIEWS = {
                     ELSE (g.gap - b.neutral_baseline)
                          / (t.stated_gap - b.neutral_baseline) END AS recovery,
                -- Two different absences of a baseline, told apart: the pair has no
-               -- neutral sentences at all (prawns), or the pair has three and this
-               -- arm read none of them.
+               -- neutral sentences at all (prawns under bank v1.0), or the pair has
+               -- three and this arm read none of them.
                CASE WHEN b.neutral_baseline IS NULL
                       THEN COALESCE(b.refused_reason,
                              CASE WHEN NOT EXISTS (
@@ -783,7 +806,8 @@ VIEWS = {
                -- THE SEPARATE GAP WITH THE CONVENTION STATED: RAW digits,
                -- professional minus private, never divided by anything, so the
                -- prawns pair (which has no neutral baseline) is carried on the same
-               -- basis as the authored pairs.
+               -- basis as the authored pairs. (Prawns gained neutral sentences in bank
+               -- v1.1; this column needs none either way.)
                sc.ev_pro AS stated_condition_pro,
                sc.ev_priv AS stated_condition_priv,
                sc.gap AS stated_condition_gap,
@@ -848,7 +872,8 @@ VIEWS = {
                    COALESCE((SELECT 'comparison unread: ' || MIN(u.unread_reason)
                                FROM duty_cells u
                               WHERE u.arm = m.arm AND u.pair_id = p.pair_id
-                                AND u.question = 'CMPN' AND u.status = 'unread'),
+                                AND u.question = 'CMPN' AND u.status = 'unread'
+                                AND u.condition IN ('cmp_pro_first', 'cmp_priv_first')),
                             'no comparison cell exists for this arm and pair')
                  END || ' ', '')
                  || COALESCE(
@@ -901,8 +926,9 @@ VIEWS = {
                SUM(CASE WHEN f.stated_condition_gap IS NOT NULL
                          AND f.stated_condition_vs_stated IS NULL THEN 1 ELSE 0 END)
                  AS n_sc_unplaced,
-               -- whether this panel has a neutral baseline at all: prawns does not
-               -- (no neutral sentences exist for it), so its remedy class is refused
+               -- whether this panel has a neutral baseline at all: under bank v1.0
+               -- prawns does not (no neutral sentences existed for it until v1.1), so
+               -- its remedy class is refused
                -- rather than borrowed; the stated-condition columns above need no
                -- baseline
                CASE WHEN EXISTS (SELECT 1 FROM duty_texts dt

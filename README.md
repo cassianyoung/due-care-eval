@@ -19,7 +19,9 @@ reports the headline figures below for that model.
   person make the same omission (prawns: chef and home cook; electrical work; gas
   safety; childcare; driving; hair dye). Each pair is read side by side in both orders,
   each case alone, each case alone with the convention stated (a professional owes a
-  stricter duty), and each case alone with each of three neutral sentences.
+  stricter duty), and each case alone with each of three neutral sentences. The prawns
+  pair's neutral sentences, and a second prawns side-by-side prompt that sets out the two
+  cases in full, were added in bank v1.1 (see Bank versions).
 
 The headline quantities:
 
@@ -79,7 +81,7 @@ A Python installed by uv does not need `python3-venv`. For the dry run below, pa
 entry in `models/`. It creates `.venv` if there is none and installs the package with the local
 extras. It then downloads GPT-2 at its pinned revision and verifies every weight file
 against the Hub's SHA-256. It reads both tests on the worksheet frame (300 excuse-test and
-270 duty-test readings: each cell under the five worksheet orderings), builds the
+300 duty-test readings: each cell under the five worksheet orderings), builds the
 database and prints the report. It checks the
 result with `scripts/dry_run_check.py`, and finally runs the offline tests with GPT-2
 cached, after downloading the tiny random Gemma-2 (about 90 MB) that the chat-template
@@ -155,6 +157,29 @@ cell unread, and the report lists the unread cells with their reasons.
 Task options: `-T scenarios=bicycle,ladder`, `-T questions=BLAME,REASONABLE`,
 `-T pairs=prawns,1`, `-T draws=N` (API models only; overrides the model table).
 
+On the duty test, `-T conditions=` narrows the read to some conditions, each a kind
+(`separate`, `comparison`, `stated`, `neutral`), a group (`joint`: the side-by-side
+prompt in both orders; `joint_full`: prawns' full-text side-by-side prompt in both
+orders) or a single condition (`bare`, `cmp_pro_first`, `cmp_priv_first`,
+`cmp_full_pro_first`, `cmp_full_priv_first`, `stated`, `neutral_1`, `neutral_2`,
+`neutral_3`), and
+`-T bank=1.0` reads the v1.0 bank (the default is the latest, 1.1). An unknown pair or
+condition, or a selection with no samples, is refused. For example, the prawns pair's
+neutral sentences alone:
+
+```bash
+inspect eval due_care/duty --model due_care/my_model -T pairs=prawns -T conditions=neutral
+```
+
+**The pre-flight prompt check.** `-T prompt_check=FILE` (both tests) names a JSON file
+of 16-hex prompt digests, a list or an object whose list values are digests. Before the
+task starts, every prompt the read would send is hashed and the read is refused, with
+nothing sent, if any digest is not in the file. A chat prompt is hashed as the messages
+sent to an API (`json.dumps` of the system and user turns, in that order) and a
+worksheet prompt as its text (`harness.frames.prompt_sha16`); on a local model the chat
+template is applied after this check. Use it to confirm that a read sends exactly the
+prompts of an earlier one.
+
 **Then the report:**
 
 ```bash
@@ -213,6 +238,32 @@ cell that loses more than 10% of its draws to voids, truncation included, is rep
 with its void count and is not used. A cell with no reading is a row with a reason, never
 a default value. The provider and model that served every call are recorded, and duty
 cells served by more than one provider are not combined into one contrast.
+
+## Bank versions
+
+The banks are versioned in `banks/MANIFEST.json`, and each version lists the files it is
+made of. A version never edits an earlier version's files; it adds files of its own.
+
+| version | duty texts | what it adds |
+|---|---|---|
+| 1.0 | 66 | the six pairs: side by side, separate, convention stated; three neutral sentences on pairs 1, 3, 4, 5 and 7 |
+| 1.1 | 74 | for the prawns pair: three neutral sentences, on both legs, and a full-text side-by-side prompt in both orders (`banks/duty_texts_v1_1.jsonl`) |
+
+`-T bank=1.0` renders every prompt byte for byte as before v1.1 existed; the test suite
+holds the digests of every v1.0 prompt, recorded before v1.1 was made, and checks it.
+Each duty cell records the bank version it was read under, and `db.build_from_readings`
+loads the texts of the latest version its cells were read under, so a database built
+from v1.0 readings is the database it always was. In a v1.1 build the prawns pair's
+neutral deviations join each model's pooled wording floor, as every other pair's do, so
+the floor (and any class that depends on it) can differ from a v1.0 build of the same
+model on every pair.
+
+The prawns pair's v1.0 side-by-side prompt summarises the two cases; the other pairs'
+set them out in full. v1.1 adds a prawns side-by-side prompt built the way the others
+are (the two separate cases, each with its subject written as the other pairs' prompts
+write it, under the labels CHEF and HOME_COOK). It is read beside the v1.0 prompt and
+reported in its own view, `duty_stated_gap_full`; the stated gap, the share and every
+class stay on the v1.0 prompt. See `CHANGELOG.md`.
 
 ## What the instrument enforces
 
@@ -307,7 +358,7 @@ its repository and commit or its path.
 
 | path | contents |
 |---|---|
-| `banks/` | the frozen texts: cases, duty texts, questions, worksheet frame; every text with its SHA-256, and `MANIFEST.json` |
+| `banks/` | the frozen texts: cases, duty texts, questions, worksheet frame; every text with its SHA-256, and `MANIFEST.json` (bank versions 1.0 and 1.1) |
 | `harness/` | the readers: `local.py` (weights, verification, teacher-forced scoring), `api.py` (the API client and its rules), `frames.py` (prompt rendering) |
 | `due_care/` | the Inspect package: datasets, solvers, scorers, metrics, tasks, report |
 | `db/` | the database schema and every view, and `build_from_readings.py` |

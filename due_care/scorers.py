@@ -13,7 +13,8 @@ from inspect_ai.solver import TaskState
 from . import readouts as RO
 
 ID_KEYS = ("test", "scenario", "role", "question", "frame", "ordering", "text_sha256",
-           "frame_sha256", "pair", "leg", "kind", "condition", "order", "group")
+           "frame_sha256", "pair", "leg", "kind", "condition", "order", "group",
+           "bank_version")
 
 
 def _ids(state):
