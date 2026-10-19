@@ -22,7 +22,6 @@ import threading
 from inspect_ai.model import GenerateConfig, ModelAPI, ModelOutput, modelapi
 
 from harness import api as API
-from harness import local as LOCAL
 
 from . import model_table
 
@@ -31,6 +30,17 @@ API_CONCURRENCY = int(os.environ.get("DUE_CARE_API_CONCURRENCY", "4"))
 SPEND_CAP = float(os.environ.get("DUE_CARE_SPEND_CAP_USD", "1.0"))
 _SPENT = {"usd": 0.0, "calls": 0}
 _SPENT_LOCK = threading.Lock()
+
+
+def _local():
+    """`harness.local`, imported on the local-weights path only: it loads torch, which an
+    API-only install (`pip install -e .`) does not have."""
+    try:
+        from harness import local
+    except ImportError as exc:
+        raise ImportError(f"a local-weights entry needs the local extra "
+                          f"(pip install -e \".[local]\"): {exc}") from exc
+    return local
 
 
 def resolve_adapter(entry, token=None):
@@ -44,7 +54,7 @@ def resolve_adapter(entry, token=None):
     if ad.get("path"):
         adapter_dir = model_table.local_adapter_dir(entry)
         if not os.path.isdir(adapter_dir):
-            raise LOCAL.Refused(f"no adapter directory at {adapter_dir}")
+            raise _local().Refused(f"no adapter directory at {adapter_dir}")
         meta = {"adapter_path": adapter_dir}
     else:
         from huggingface_hub import snapshot_download
@@ -59,7 +69,7 @@ def resolve_adapter(entry, token=None):
         adapter_dir = os.path.join(root, sub) if sub else root
         # the commit that served is the snapshot directory's name
         meta = {"adapter_repo": ad["repo"], "adapter_revision": os.path.basename(root)}
-    LOCAL.check_adapter(adapter_dir, ad.get("digest"), entry["checkpoint"]["repo"])
+    _local().check_adapter(adapter_dir, ad.get("digest"), entry["checkpoint"]["repo"])
     return adapter_dir, meta
 
 
@@ -112,14 +122,14 @@ class DueCareAPI(ModelAPI):
             token = os.environ.get("HF_TOKEN")
             ad = self.entry.get("adapter")
             adapter_dir, adapter_meta = resolve_adapter(self.entry, token)
-            path, digests = LOCAL.fetch_verified(ck["repo"], ck["revision"], token)
-            self._tok, self._model, meta = LOCAL.load(
+            path, digests = _local().fetch_verified(ck["repo"], ck["revision"], token)
+            self._tok, self._model, meta = _local().load(
                 path, self.spec, adapter=adapter_dir,
                 expect_adapter_digest=(ad or {}).get("digest"), expect_base=ck["repo"])
             self._load_meta = {**meta, **adapter_meta, "repo": ck["repo"],
                                "revision": ck["revision"],
                                "weights_verified": sorted(digests),
-                               "environment": LOCAL.environment()}
+                               "environment": _local().environment()}
 
     def _render(self, frame, system, text):
         if frame == "worksheet":
@@ -127,9 +137,9 @@ class DueCareAPI(ModelAPI):
         tmpl = self.entry.get("template") or {}
         if tmpl.get("system_role") == "fold":
             folded = ((system or "") + "\n\n" + text).strip()
-            p, wrap = LOCAL.render_chat(self._tok, None, folded)
+            p, wrap = _local().render_chat(self._tok, None, folded)
             return p, ("chat_system_folded" if p else wrap)
-        return LOCAL.render_chat(self._tok, system, text)
+        return _local().render_chat(self._tok, system, text)
 
     def _local_read_sync(self, frame, system, text, answers, prefix):
         self._ensure_loaded()
@@ -138,11 +148,11 @@ class DueCareAPI(ModelAPI):
             return {"void": True, "void_reason": wrap}
         with self._lock:
             if frame not in self.determinism:
-                self.determinism[frame] = LOCAL.determinism_check(
+                self.determinism[frame] = _local().determinism_check(
                     self._tok, self._model, prompt, wrap, answers, prefix)
             if not self.determinism[frame]["passed"]:
-                raise LOCAL.Refused(f"determinism check failed on the {frame} frame")
-            cell = LOCAL.read_cell(self._tok, self._model, prompt, wrap, answers, prefix)
+                raise _local().Refused(f"determinism check failed on the {frame} frame")
+            cell = _local().read_cell(self._tok, self._model, prompt, wrap, answers, prefix)
         cell["determinism"] = self.determinism[frame]
         cell["load"] = {k: v for k, v in self._load_meta.items() if k != "environment"}
         return cell

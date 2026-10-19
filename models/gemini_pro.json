@@ -17,7 +17,7 @@
    "readout": "sampled",
    "wire_sha": "94f0bcfaa46e2539228727327fda0d10",
    "other_settings_in_the_logs": [],
-   "source": "AMENDMENT_V1_1_COMPLETENESS C1 (2026-10-17): mirrors this entry's duty_separate wire; read later, as run 236"
+   "source": "AMENDMENT_V1_1_COMPLETENESS C1 (2026-10-17): mirrors this entry's duty_separate wire; read later, as the gemini_pro_fill reading"
   },
   "scenarios": {
    "wire": {
@@ -32,7 +32,7 @@
    "readout": "sampled",
    "wire_sha": "94f0bcfaa46e2539228727327fda0d10",
    "other_settings_in_the_logs": [],
-   "source": "AMENDMENT_V1_1_COMPLETENESS C1 (2026-10-17): mirrors this entry's duty_separate wire; read later, as run 236"
+   "source": "AMENDMENT_V1_1_COMPLETENESS C1 (2026-10-17): mirrors this entry's duty_separate wire; read later, as the gemini_pro_fill reading"
   },
   "duty_separate": {
    "wire": {

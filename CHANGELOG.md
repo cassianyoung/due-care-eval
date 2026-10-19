@@ -2,9 +2,23 @@
 
 ## v1.1
 
-Release candidate `v1.1-rc1`, 2026-10-17, compared against tag `v1.0`. Two parts: the
-completeness fill (this section) and the prawns neutral sentences and full-text joint
-prompt (the next).
+Tagged 2026-10-19 at release candidate `v1.1-rc3`, compared against tag `v1.0`. Two
+parts: the completeness fill (this section) and the prawns neutral sentences and full-text
+joint prompt (the next). `v1.1-rc1` (2026-10-17) and `v1.1-rc2` are the earlier
+candidates; `v1.1-rc3` adds, on top of `v1.1-rc2`:
+
+- **API models install without torch:** `pip install -e .` now runs an API model. The
+  provider imported the local-weights reader, and with it torch, whenever the package
+  loaded, so without the `local` extra Inspect reported the `due_care` model API as not
+  recognised. The reader is now imported on the local-weights path only, and a local
+  entry without torch names the extra it needs. Tested (`tests/test_api_without_torch.py`,
+  which makes torch and the other local-weights packages unimportable and runs both tasks
+  on an API entry).
+- **Readings named as in the paper's repository:** model entries, tests and this file
+  name readings by their public names (`deployed_bicycle_ladder`,
+  `deployed_bicycle_rivals`, `gemini_pro_fill`), and the Gemini 3.8 Flash wire test reads
+  its expected settings from `tests/fixtures/gemini_r_bicycle_wire.json`.
+- **Version** `1.1.0`.
 
 ### The completeness fill
 
@@ -30,10 +44,11 @@ neutral sentences and full-text joint prompt described in the next section.
   or `-T roles=all`).
 - **Single cells, both tests:** `-T cells=` takes sample ids or a JSON file of them, and
   refuses any id the selection does not render.
-- **Gemini 3.8 Flash's bicycle wire corrected** (`models/gemini_r.json`): it was run 215's
-  8-token setting, on which the model's reasoning ends before any answer and every cell
-  fails the 10% void rule; it is now run 214's (2,048 tokens, effort low, Google AI
-  Studio), the reading the paper reports. The withdrawn setting stays listed under
+- **Gemini 3.8 Flash's bicycle wire corrected** (`models/gemini_r.json`): it was the 8-token
+  setting of the deployed_bicycle_rivals reading, on which the model's reasoning ends
+  before any answer and every cell fails the 10% void rule; it is now the setting of the
+  deployed_bicycle_ladder reading (2,048 tokens, effort low, Google AI Studio), the reading
+  the paper reports. The withdrawn setting stays listed under
   `other_settings_in_the_logs` with the reason. Tested (`tests/test_v1_1_fill.py`).
   Release candidate `v1.1-rc2`.
 - **Gemini 3.1 Pro on the excuse test:** `models/gemini_pro.json` gains `bicycle` and

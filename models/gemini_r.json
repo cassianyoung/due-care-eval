@@ -28,12 +28,12 @@
      "temperature": 1.0,
      "want_logprobs": false,
      "n_calls": 1080,
-     "withdrawn": "run 215's 8-token wire: most draws end in reasoning before any answer, and no draw that answers has reasoned, so its cells fail the 10% void rule. Withdrawn from the bicycle setting 2026-10-17."
+     "withdrawn": "the deployed_bicycle_rivals reading's 8-token wire: most draws end in reasoning before any answer, and no draw that answers has reasoned, so its cells fail the 10% void rule. Withdrawn from the bicycle setting 2026-10-17."
     }
    ],
    "wire_sha": "0e44796cb3bec3e8ff76edeb8cd2fa9f",
    "readout": "reasoning",
-   "source": "run 214's bicycle read (460 calls, one setting throughout), the reading the paper reports"
+   "source": "the deployed_bicycle_ladder reading (460 bicycle calls, one setting throughout), the reading the paper reports"
   },
   "scenarios": {
    "wire": {

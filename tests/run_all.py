@@ -10,7 +10,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SCRIPTS = [os.path.join(HERE, f) for f in ("test_rules.py", "test_db_bridge.py",
                                             "test_inspect_end_to_end.py", "test_local.py",
-                                            "test_bank_v1_1.py", "test_v1_1_fill.py")]
+                                            "test_bank_v1_1.py", "test_v1_1_fill.py",
+                                            "test_api_without_torch.py")]
 SCRIPTS.append(os.path.join(ROOT, "db", "test_views.py"))
 env = dict(os.environ, HF_HUB_OFFLINE="1", PYTHONPATH=ROOT)
 failed = []

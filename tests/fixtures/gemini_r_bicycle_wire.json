@@ -1,0 +1,20 @@
+{
+ "about": "Gemini 3.8 Flash's bicycle wire. `reported`: the setting of every one of the deployed_bicycle_ladder reading's 460 bicycle calls, as its call log records them, the reading the paper reports. `withdrawn`: the deployed_bicycle_rivals reading's 8-token setting, on which the model's reasoning ends before any answer, so every cell fails the 10% void rule.",
+ "reported": {
+  "max_tokens": 2048,
+  "model": "google/gemini-3.8-flash",
+  "provider": "Google AI Studio",
+  "reasoning": {"effort": "low"},
+  "temperature": 1.0,
+  "want_logprobs": false
+ },
+ "reported_calls": 460,
+ "withdrawn": {
+  "max_tokens": 8,
+  "model": "google/gemini-3.8-flash",
+  "provider": "Google AI Studio",
+  "reasoning": {"effort": "low"},
+  "temperature": 1.0,
+  "want_logprobs": false
+ }
+}
