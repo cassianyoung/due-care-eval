@@ -10,8 +10,10 @@ import os
 
 from harness import api as API
 
+from harness.frames import data_dir  # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODELS = os.environ.get("DUE_CARE_MODELS") or os.path.join(ROOT, "models")
+MODELS = os.environ.get("DUE_CARE_MODELS") or data_dir("models")
 GROUPS = ("bicycle", "scenarios", "duty_separate", "duty_comparison")
 READOUTS = ("logprob", "sampled", "reasoning")
 

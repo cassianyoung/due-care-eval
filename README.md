@@ -61,8 +61,11 @@ pip install -e .            # API models
 pip install -e ".[local]"   # also local weights (torch, transformers, peft)
 ```
 
-Install in editable mode (`-e`): the banks and the model table are read from this
-directory.
+Either install works. In editable mode (`-e`) the banks and the model table are read from
+this directory, so a model entry added to `models/` is used at once; a regular install
+(`pip install .`, or a wheel) carries its own copy of both inside the package
+(`due_care/banks`, `due_care/models`). `DUE_CARE_MODELS` points the model table at another
+directory in either case.
 
 **On Debian and Ubuntu** the system Python creates environments only once the
 `python3-venv` package is installed (`apt-get install python3-venv`). **Where the system

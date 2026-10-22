@@ -28,4 +28,16 @@ local = [
 due_care = "due_care._registry"
 
 [tool.setuptools]
-packages = ["due_care", "due_care.tasks", "harness", "db"]
+packages = ["due_care", "due_care.tasks", "harness", "db", "due_care.banks", "due_care.models"]
+
+# The banks and the ready-made model entries are data the package reads at run time. In a
+# checkout they are banks/ and models/ at the root; a wheel ships them inside the package
+# as due_care/banks and due_care/models (never as top-level "banks" or "models", which
+# would collide with other projects). harness.frames.data_dir() picks whichever applies.
+[tool.setuptools.package-dir]
+"due_care.banks" = "banks"
+"due_care.models" = "models"
+
+[tool.setuptools.package-data]
+"due_care.banks" = ["*.json", "*.jsonl"]
+"due_care.models" = ["*.json"]

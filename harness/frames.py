@@ -8,7 +8,27 @@ import hashlib
 import json
 import os
 
-BANKS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "banks")
+def data_dir(name):
+    """`banks` or `models`: the checkout's own directory in a clone or an editable install
+    (the root holding pyproject.toml), otherwise the copy a wheel installs inside the
+    package, due_care/<name>. Never a top-level directory of that name elsewhere on the
+    path, which would belong to another project."""
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if os.path.isfile(os.path.join(root, "pyproject.toml")) and \
+            os.path.isdir(os.path.join(root, name)):
+        return os.path.join(root, name)
+    import importlib.util
+    spec = importlib.util.find_spec("due_care")
+    if spec is None or not spec.submodule_search_locations:
+        raise FileNotFoundError(f"no {name}/: not a checkout, and due_care is not installed")
+    d = os.path.join(list(spec.submodule_search_locations)[0], name)
+    if not os.path.isdir(d):
+        raise FileNotFoundError(f"no {name}/ in the installed package ({d}): the wheel was "
+                                "built without its package data")
+    return d
+
+
+BANKS = data_dir("banks")
 
 SUBJECT_NAMES = ("Alaric",)
 TABLE1_ROLES = ("N", "C", "I", "P0", "P1", "P1_R", "P1_neutral", "P2", "P2_other",

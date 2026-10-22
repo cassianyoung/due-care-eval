@@ -3,11 +3,19 @@
 ## v1.1
 
 Tagged 2026-10-22, compared against tag `v1.0`: release candidate `v1.1-rc3` with the
-prawns stated-gap rule below (both orders, never the summary) and the citation metadata
-(`CITATION.cff`, `.zenodo.json`). Two parts: the completeness fill (this section) and the
+prawns stated-gap rule below (both orders, never the summary), the citation metadata
+(`CITATION.cff`, `.zenodo.json`), and the packaging fix below. Two parts: the completeness fill (this section) and the
 prawns neutral sentences and full-text joint prompt (the next). `v1.1-rc1` (2026-10-17)
 and `v1.1-rc2` are the earlier candidates; `v1.1-rc3` adds, on top of `v1.1-rc2`:
 
+- **A regular install reads its banks** (re-tag of 2026-10-22): `pip install .` or a wheel
+  shipped the code and no data, so the first bank read failed with `FileNotFoundError`;
+  every test passed because each runs from the checkout. `banks/` and `models/` now ship
+  inside the package as `due_care/banks` and `due_care/models`, and
+  `harness.frames.data_dir` uses the checkout's own directories where they exist. Tested
+  (`tests/test_wheel_install.py`: builds the wheel, checks every bank file in the
+  manifest and every model entry is in it byte for byte, reads them from an install with
+  no checkout on the path, and fails a wheel built with v1.1-rc3's packaging).
 - **API models install without torch:** `pip install -e .` now runs an API model. The
   provider imported the local-weights reader, and with it torch, whenever the package
   loaded, so without the `local` extra Inspect reported the `due_care` model API as not
