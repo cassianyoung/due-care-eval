@@ -5,6 +5,10 @@ as [Inspect](https://inspect.aisi.org.uk/) tasks. Each task runs on a deployed m
 through an API or on a pretrained or instruction-tuned checkpoint on local weights, and
 reports the headline figures below for that model.
 
+It is the evaluation behind the paper *Blaming the Blameless: Language Models Endorse Reasonable Care but Enforce Strict Causal Blame*, whose data, figures, tables and
+replication are in [blaming-the-blameless-paper](https://github.com/cassianyoung/blaming-the-blameless-paper).
+The package itself holds no result of the paper and does not depend on it.
+
 * **The excuse test** (`due_care/excuse`). Six scenarios (a lent bicycle, a lent ladder,
   prawns served at home, prawns served in a restaurant, scaffolding, a cheque), each
   written in ten roles that differ in what the subject did and knew: N (no harm), C
@@ -397,6 +401,11 @@ The question and worksheet bodies use `{agent}` as a placeholder, and the case r
 `agent` as a field name. Both are part of the frozen texts, which are identified by their
 SHA-256 digests, so they are left unchanged. Models never see the word: the placeholder
 is filled with the subject's name.
+
+## Citation
+
+Young, C. (2026). *Blaming the Blameless: Language Models Endorse Reasonable Care but Enforce Strict Causal Blame*. Cite the paper, and this repository by the metadata in
+[`CITATION.cff`](CITATION.cff) (GitHub's "Cite this repository" reads it).
 
 ## Licence
 

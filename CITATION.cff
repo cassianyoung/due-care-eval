@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper (preferred-citation) and this repository."
+title: "due-care-eval: does a language model apply the standard of reasonable care?"
+type: software
+authors:
+  - family-names: Young
+    given-names: Cassian
+    affiliation: "Independent Researcher, London"
+repository-code: "https://github.com/cassianyoung/due-care-eval"
+version: "1.1.0"
+license: Apache-2.0
+keywords:
+  - language models
+  - moral judgement
+  - reasonable care
+  - evaluation
+  - Inspect
+preferred-citation:
+  type: article
+  title: "Blaming the Blameless: Language Models Endorse Reasonable Care but Enforce Strict Causal Blame"
+  authors:
+    - family-names: Young
+      given-names: Cassian
+      affiliation: "Independent Researcher, London"
+  year: 2026

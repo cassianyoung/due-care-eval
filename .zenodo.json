@@ -1,0 +1,28 @@
+{
+  "title": "due-care-eval: does a language model apply the standard of reasonable care?",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Young, Cassian",
+      "affiliation": "Independent Researcher, London"
+    }
+  ],
+  "description": "Two tests of whether a language model applies the standard of reasonable care (the excuse test and the duty test), packaged as Inspect tasks for deployed models and local weights. The evaluation behind \"Blaming the Blameless: Language Models Endorse Reasonable Care but Enforce Strict Causal Blame\". Code Apache-2.0; banks CC BY 4.0 (see LICENSES.md).",
+  "license": "apache-2.0",
+  "access_right": "open",
+  "version": "1.1.0",
+  "keywords": [
+    "language models",
+    "moral judgement",
+    "reasonable care",
+    "evaluation",
+    "Inspect"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/cassianyoung/blaming-the-blameless-paper",
+      "relation": "isSupplementTo",
+      "resource_type": "dataset"
+    }
+  ]
+}
