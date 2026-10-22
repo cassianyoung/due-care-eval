@@ -405,10 +405,27 @@ The question and worksheet bodies use `{agent}` as a placeholder, and the case r
 SHA-256 digests, so they are left unchanged. Models never see the word: the placeholder
 is filled with the subject's name.
 
-## Citation
+## Cite
 
-Young, C. (2026). *Blaming the Blameless: Language Models Endorse Reasonable Care but Enforce Strict Causal Blame*. Cite the paper, and this repository by the metadata in
-[`CITATION.cff`](CITATION.cff) (GitHub's "Cite this repository" reads it).
+Please cite the paper:
+
+```bibtex
+@misc{young2026blaming,
+  title         = {Blaming the Blameless: Language Models Endorse Reasonable Care but Enforce Strict Causal Blame},
+  author        = {Young, Cassian},
+  year          = {2026},
+  eprint        = {XXXX.XXXXX},
+  archivePrefix = {arXiv},
+  note          = {arXiv identifier to follow}
+}
+```
+
+and this software, by its archive on Zenodo. The concept DOI below always resolves to the latest
+version; each release has its own version DOI on the same page.
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23568335.svg)](https://doi.org/10.5281/zenodo.23568335)
+
+GitHub's "Cite this repository" reads [`CITATION.cff`](CITATION.cff).
 
 ## Licence
 
